@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "exhumation"
+version = "0.1.0"
+description = "stochastic simulation of exhumation from a kinematic modeling"
+authors = ["Sofia Brisson <sofiabrisson@hotmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "*.py", from = "./"}
+]   
+
+[tool.poetry.dependencies]
+python = "^3.8"
+matplotlib = "^3.7.1"
+pandas = "^2.0.2"
+tqdm = "^4.65.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
