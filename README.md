@@ -14,7 +14,7 @@ Example of the paramters output file
 |----|-----| ------ | ----| -----|-----|-----| -----|----|
 |    |     |        |     |      |     |     |      |    |
 
-
+---
 ##### Model Coordinates
 The coordinates of the whole model. For each draw there is one set of coordinates that represent the model itself. At the end of the simulation the NDRAW sets are concateated in a single pickle file with the following convetion
 
@@ -23,7 +23,7 @@ The coordinates of the whole model. For each draw there is one set of coordinate
 | N_Sample | X    | Y      | Z    | Exhumation | NDraw |
 |----------|------|--------|------|------------|-------|
 | sono     | una  | grande | alta | bol        | uda   |
-
+---
 ##### Model Blocks
 The block matrix that tells the rock type contained in each voxel. It is important for calculating the entropy and for visualizing the models. For each draw there is one block that represents the model itself. At the end of the simulation the NDRAW blocks are concateated in a single pickle file with the following convetion
 
@@ -34,8 +34,7 @@ The output file is a 4-index matrix
 [draw number, x voxel index, y voxel index, z voxel index]
 ```
 which contains integers specifying the lithology ID
-```
-
+---
 ##### Model Scores
 The scores of the model describing how well the model fits the input data. For each draw there is one score (i.e. a number from 1 to 10). A simple pandas dataframe file keeps track of the scores:
 
@@ -44,7 +43,7 @@ The scores of the model describing how well the model fits the input data. For e
 | Draw  Numer | Score | 
 |----------|------|
 | 1     | Mas que un panch  |
-
+---
 ##### Model Sample
 The observations are input to the simulation as a pandas dataframe containing the coordinates of the sample, the ID of the sample and the group. During the simulation a new column is added to the dataframe adding +1 every time the observation matches the model.
 
