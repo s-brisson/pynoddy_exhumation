@@ -5,10 +5,8 @@ np.set_printoptions(threshold=np.inf)
 from matplotlib import rcParams
 from mpl_toolkits.mplot3d import Axes3D 
 import argparse
-
+from default_configs import noddy_exe
 rcParams['font.size'] = 15
-
-noddy_exe = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/noddy"
 
 #Determine the path of the repository to set paths correctly below.
 
@@ -114,7 +112,7 @@ def disturb_value(event, prop, stdev):
     return new_val
 
 
-def disturb(PH_local):
+def disturb(PH_local, ndraw):
     data = []
     for event_name, event in PH_local.events.items():
         if isinstance(event, pynoddy.events.Fault):
@@ -125,14 +123,14 @@ def disturb(PH_local):
             new_amp = disturb_value(event, 'Amplitude', 100)
             new_x = disturb_value(event, 'X', 50)
             new_z = disturb_value(event, 'Z', 75)
-            data.append([event_name, new_dip, new_dipdir, new_pitch, new_slip, new_amp, new_x, new_z])
+            data.append([event_name, new_dip, new_dipdir, new_pitch, new_slip, new_amp, new_x, new_z, ndraw])
     
-    columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z']
+    columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z','nDraw']
     df = pd.DataFrame(data, columns=columns)
     return df
 
 
-def exhumationComplex(history, lith, res = 8, interval = 50, upperlim = 0, unique_label="20235555555555_AAAAAA"):
+def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0, unique_label="20235555555555_AAAAAA"):
     
     """function for estimating the exhumation (vertical movement) from a noddy history. Arguments:
             lith: lith id of the dyke or item used to track the movement
@@ -173,7 +171,7 @@ def exhumationComplex(history, lith, res = 8, interval = 50, upperlim = 0, uniqu
                 print(f"[{time_string()}] Processing indicator at z = {new_z} ... Done")
         
         for j in range(len(x)):    
-            coords.append([n_sample,x[j],y[j],z[j],exhumation[j]])
+            coords.append([n_sample,x[j],y[j],z[j],exhumation[j],ndraw])
         
         #coords = np.array(coords)
             

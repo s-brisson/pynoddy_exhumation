@@ -4,12 +4,13 @@ import pickle
 
 created_parser = parser()
 args = created_parser.parse_args()
-
 label = generate_unique_label()
-history = 'data/input_files/bregenz_ver5.his'
-output_folder = "data/outputs"
-model_coordinate_folder = f"{output_folder}/model_coords/bregenz_coords/{args.folder}/"
-model_block_folder = f"{output_folder}/model_block/bregenz_coords/{args.folder}/"
+
+model_coords_folder = f"{output_folder}/{model_name}/model_coords/{args.folder}/"
+model_blocks_folder = f"{output_folder}/{model_name}/model_blocks/{args.folder}/"
+model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
+model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
+model_samples_folder = f"{output_folder}/{model_name}/model_samples/{args.folder}/"
 makedirs(model_coordinate_folder,exist_ok=True)
 makedirs(model_block_folder,exist_ok=True)
 
