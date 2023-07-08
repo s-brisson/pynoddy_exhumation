@@ -113,18 +113,24 @@ def disturb_value(event, prop, stdev):
     
     return new_val
 
-# function for disturbing the model once
+
 def disturb(PH_local):
-    for event in PH_local.events.values():
-        if isinstance(event,pynoddy.events.Fault):
-            new_dip = disturb_percent(event, 'Dip')
-            new_dipdir = disturb_percent(event, 'Dip Direction')
-            new_pitch = disturb_percent(event, 'Pitch')
-            #disturb_value(event, 'Slip', 500)
-            new_x = disturb_value(event, 'X', 250)
-            new_y = disturb_value(event,'Y', 250)
-            new_z = disturb_value(event, 'Z', 300)
-    return new_dip, new_dipdir, new_pitch, new_x, new_y, new_z
+    data = []
+    for event_name, event in PH_local.events.items():
+        if isinstance(event, pynoddy.events.Fault):
+            new_dip = disturb_percent(event, 'Dip', percent=5)
+            new_dipdir = disturb_percent(event, 'Dip Direction', percent=5)
+            new_pitch = disturb_percent(event, 'Pitch', percent=5)
+            new_slip = disturb_value(event, 'Slip', 400)
+            new_amp = disturb_value(event, 'Amplitude', 100)
+            new_x = disturb_value(event, 'X', 50)
+            new_z = disturb_value(event, 'Z', 75)
+            data.append([event_name, new_dip, new_dipdir, new_pitch, new_slip, new_amp, new_x, new_z])
+    
+    columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z']
+    df = pd.DataFrame(data, columns=columns)
+    return df
+
 
 def exhumationComplex(history, lith, res = 8, interval = 50, upperlim = 0, unique_label="20235555555555_AAAAAA"):
     
