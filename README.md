@@ -33,7 +33,9 @@ The output file is a 4-index matrix
 ```
 [draw number, x voxel index, y voxel index, z voxel index]
 ```
+
 which contains integers specifying the lithology ID
+
 ---
 ##### Model Scores
 The scores of the model describing how well the model fits the input data. For each draw there is one score (i.e. a number from 1 to 10). A simple pandas dataframe file keeps track of the scores:
@@ -47,7 +49,7 @@ The scores of the model describing how well the model fits the input data. For e
 ##### Model Sample
 The observations are input to the simulation as a pandas dataframe containing the coordinates of the sample, the ID of the sample and the group. During the simulation a new column is added to the dataframe adding +1 every time the observation matches the model.
 
-`data/outputs/bregenz/model_score/yyyymmdd_HHMM/scores_<unique_label>.csv`
+`data/outputs/bregenz/model_sample/yyyymmdd_HHMM/samples_<unique_label>.csv`
 
 
 | I don't  | know | 
