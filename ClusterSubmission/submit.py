@@ -38,7 +38,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
         sout.write("#SBATCH --job-name=array_job_Groupable\n")
         sout.write("# cap on execution time\n")
         sout.write("#d-hh:mm:ss\n")
-        sout.write("#SBATCH --time=0-6:00:00\n")
+        sout.write("#SBATCH --time=0-24:00:00\n")
         sout.write("# this is a hard limit\n")
         sout.write("#SBATCH --mem-per-cpu=4000MB\n")
         sout.write("### Declare the merged STDOUT/STDERR file\n")
