@@ -108,9 +108,15 @@ for i in tqdm(range(n_draws), desc = 'Lets score em all'):
         new_params.to_csv('scoring/params/params_%04d.csv'%i, index = False)
         
 all_scores = pd.DataFrame(all_scores,columns=["Score","nDraw"])
+
+#calculate entropy so I don't have to save all the blocks.
+total_entropy, slice_entropy = calc_entropy(all_blocks, out_hd, n = 1)
+pickle.dump(total_entropy, open(f'{model_samples_folder}/entropy_{label}.pkl','wb'))
+np.save(f'{model_samples_folder}/slice_entropy_{label}.npy', slice_entropy)
+
 if save_overall == True:
     pickle.dump(all_coords, open(f'{model_coords_folder}/coords_{label}.pkl', 'wb'))
-    pickle.dump(all_blocks, open(f'{model_blocks_folder}/blocks_{label}.pkl', 'wb'))
+#    pickle.dump(all_blocks, open(f'{model_blocks_folder}/blocks_{label}.pkl', 'wb'))
     all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
     all_scores.to_csv(f'{model_scores_folder}/scores_{label}.csv',  index = False)
     samples_df.to_csv(f'{model_samples_folder}/samples_{label}.csv', index = False)
