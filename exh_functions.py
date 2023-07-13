@@ -5,7 +5,7 @@ np.set_printoptions(threshold=np.inf)
 from matplotlib import rcParams
 from mpl_toolkits.mplot3d import Axes3D 
 import argparse
-from default_configs import noddy_exe
+from default_configs import noddy_exe,output_folder
 rcParams['font.size'] = 15
 
 #Determine the path of the repository to set paths correctly below.
@@ -39,8 +39,8 @@ def parser():
 
 # function to clean temporary files
 def clean(label):
-    os.system(f"rm ./data/outputs/noddy/*{label}*")
-    os.system(f"rm ./data/outputs/history/*{label}*")
+    os.system(f"rm {output_folder}/noddy/*{label}*")
+    os.system(f"rm {output_folder}/history/*{label}*")
 
 # function to generate unique label string to avoid output files to be overwritten
 def generate_unique_label():
@@ -56,8 +56,8 @@ def time_string():
 def ExtractCoords(hist_moment, lith, res, unique_label):
     
     # Compute noddy model for history file
-    temp_hist = f'data/outputs/history/temp_hist_{unique_label}.his'
-    temp_out = f'data/outputs/noddy/temp_out_{unique_label}'
+    temp_hist = f'{output_folder}/history/temp_hist_{unique_label}.his'
+    temp_out = f'{output_folder}/noddy/temp_out_{unique_label}'
     hist_moment.write_history(temp_hist)
     pynoddy.compute_model(temp_hist, temp_out, 
                           noddy_path = noddy_exe)

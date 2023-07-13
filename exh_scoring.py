@@ -56,9 +56,7 @@ out_hd = pynoddy.output.NoddyOutput(out_hd)
 
 #other important values
 for event_name, event in hist.events.items():
-    print(f"[{time_string()}] inside the event loop, type(event) = {type(event)}")
     if isinstance(event, pynoddy.events.Dyke): 
-        print(f"[{time_string()}] condition is true, event.__dict__ {event.__dict__}")
         ori_depth = event.properties['Z']
 res_z = np.floor((np.abs(ori_depth) + out_hd.zmax) / interval)
 min_depth = (res_z * interval) + ori_depth #depth up until the indicator actually gets
@@ -88,7 +86,7 @@ for i in tqdm(range(n_draws), desc = 'Lets score em all'):
     new_params = disturb(hist_copy,i)
     
     #calculate exhumation for the new model
-    coords, output = exhumationComplex(i, hist_copy, lith, res, interval, upperlim)
+    coords, output = exhumationComplex(i, hist_copy, lith, res, interval, upperlim, unique_label = label)
     
     #interpolate exhumation for each sample position
     #value to interpolate
@@ -116,3 +114,5 @@ if save_overall == True:
     all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
     all_scores.to_csv(f'{model_scores_folder}/scores_{label}.csv',  index = False)
     samples_df.to_csv(f'{model_samples_folder}/samples_{label}.csv', index = False)
+print(f"[{time_string()}] Complete")
+clean(label)
