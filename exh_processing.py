@@ -4,6 +4,10 @@ import sys
 import importlib
 import copy
 
+sys.path.append(hspace_path)
+import hspace.measures
+importlib.reload(hspace.measures)
+
 # making coordinate transformation code generic
 # first we have to select the first non-zero value of each coord x,y,z and this will correspond to the "res" value
 #that we chose
