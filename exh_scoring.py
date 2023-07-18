@@ -74,6 +74,8 @@ all_blocks = np.ndarray((n_draws, out_hd.nx, out_hd.ny, out_hd.nz), dtype = 'int
 all_params = pd.DataFrame(columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z','nDraw'])
 all_scores = []
 samples_df = pd.read_csv(samples, delimiter = ',')
+sections = np.empty((n_draws, out_hd.nx, out_hd.nz))
+
 
 #starting counter 
 samples_df['respected'] = 0
@@ -101,6 +103,7 @@ for i in tqdm(range(n_draws), desc = 'Lets score em all'):
     all_coords.append(coords)
     all_blocks[i,:,:,:] = output.block
     all_params = pd.concat([all_params, new_params], ignore_index = True)
+    sections[i,;,:] = output.block[:,10,:]
     
     if save_each == True:
         np.save('scoring/coords/coords_%04d.npy'%i, coords)
@@ -116,6 +119,7 @@ np.save(f'{model_samples_folder}/slice_entropy_{label}.npy', slice_entropy)
 
 if save_overall == True:
     pickle.dump(all_coords, open(f'{model_coords_folder}/coords_{label}.pkl', 'wb'))
+    pickle.dump(sections, open(f'{model_blocks_folder}/sections_{label}.pkl', 'wb')
 #    pickle.dump(all_blocks, open(f'{model_blocks_folder}/blocks_{label}.pkl', 'wb'))
     all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
     all_scores.to_csv(f'{model_scores_folder}/scores_{label}.csv',  index = False)
