@@ -103,7 +103,7 @@ for i in tqdm(range(n_draws), desc = 'Lets score em all'):
     all_coords.append(coords)
     all_blocks[i,:,:,:] = output.block
     all_params = pd.concat([all_params, new_params], ignore_index = True)
-    sections[i,;,:] = output.block[:,10,:]
+    sections[i,:,:] = output.block[:,10,:]
     
     if save_each == True:
         np.save('scoring/coords/coords_%04d.npy'%i, coords)
