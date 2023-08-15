@@ -112,22 +112,22 @@ def disturb_value(event, prop, stdev):
     return new_val
 
 
-def disturb(PH_local, ndraw):
+def disturb(PH_local, std_list, ndraw):
     data = []
     for event_name, event in PH_local.events.items():
         if isinstance(event, pynoddy.events.Fault):
-            new_dip = disturb_percent(event, 'Dip', percent=5)
-            new_dipdir = disturb_percent(event, 'Dip Direction', percent=5)
-            new_pitch = disturb_percent(event, 'Pitch', percent=5)
-            new_slip = disturb_value(event, 'Slip', 400)
-            new_amp = disturb_value(event, 'Amplitude', 100)
-            new_x = disturb_value(event, 'X', 50)
-            new_z = disturb_value(event, 'Z', 75)
-            data.append([event_name, new_dip, new_dipdir, new_pitch, new_slip, new_amp, new_x, new_z, ndraw])
+            new_slip = disturb_value(event, 'Slip', std_list[0])
+            new_amp = disturb_value(event, 'Amplitude', std_list[1])
+            new_x = disturb_value(event, 'X', std_list[2])
+            #new_dip = disturb_percent(event, 'Dip', percent=5)
+            new_dipdir = disturb_percent(event, 'Dip Direction', std_list[3])
+            #new_pitch = disturb_percent(event, 'Pitch', percent=5)
+            #new_z = disturb_value(event, 'Z', 75)
+            data.append([event_name, new_slip, new_amp, new_x, new_dipdir, ndraw])
     
-    columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z','nDraw']
+    columns = ['Event', 'New Slip', 'New Amplitude', 'New X', 'New Dip Direction','nDraw']
     df = pd.DataFrame(data, columns=columns)
-    return df
+    return data, df
 
 
 def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0, unique_label="20235555555555_AAAAAA"):
@@ -175,6 +175,60 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
         
         #coords = np.array(coords)
             
-    return coords, N1
+    return coords, N1, hist_copy
 
-  
+#INVERSION FUNCTIONS
+def create_pdf(mean, std_dev):
+    def pdf(x):
+        coeff = 1 / (std_dev * np.sqrt(2 * np.pi))
+        exponent = - ((x - mean) ** 2) / (2 * std_dev ** 2)
+        return coeff * np.exp(exponent)
+    return pdf
+
+def prior_dist(og_params,proposed_params,std_list):
+    prior_prob = 1.0
+    for i in range(len(og_params)):
+        for j in range(len(std_list)-1):
+            pdf = create_pdf(og_params[i][j+1], std_list[j])
+            prior_prob *= pdf(proposed_params[i][j+1])
+    return prior_prob
+
+def likelihood(samples_df):
+    likelihood = 1.0
+    
+    for i in range(len(samples_df)):
+        if samples_df.iloc[i]['group'] in ['a']:
+            if samples_df.iloc[i]['exhumation'] < 30: #non reset AFT sample (B60, always accepted) strict
+                likelihood *= 10
+                
+            else:
+                proximity = (samples_df.iloc[i]['exhumation'][0] - 30) / 30
+                rf = np.exp(-25 * proximity)
+                likelihood *= rf
+                
+        
+        elif samples_df.iloc[i]['group'] in ['b']:
+            if samples_df.iloc[i]['exhumation'] > 48: #reset AFT sample (B10, never accepted) not strict
+                likelihood *= 30
+            else:
+                #proximity = (48 - samples_df.iloc[i]['exhumation'][0]) / 48
+                #rf = np.exp(-2 * proximity)
+                likelihood *= 5
+                
+                
+        elif samples_df.iloc[i]['group'] in ['c']: #this should be a strict criteria #reset AHe, partially reset AFT
+            if samples_df.iloc[i]['exhumation'] > 32 and samples_df.iloc[i]['exhumation'] < 48:
+                likelihood *= 10
+            else:
+                likelihood *= 0.05
+                
+        elif samples_df.iloc[i]['group'] in ['d']: #reset AHe samples
+            if samples_df.iloc[i]['exhumation'] > 32:
+                likelihood *= 10
+            else:
+                proximity = (32 - samples_df.iloc[i]['exhumation'][0]) / 32
+                rf = np.exp(-10 * proximity)
+                likelihood *= rf
+        else:
+            print('this is not a group')
+    return likelihood
