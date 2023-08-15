@@ -3,11 +3,7 @@ from scipy import interpolate
 import sys
 import importlib
 import copy
-
-sys.path.append(hspace_path)
-import hspace.measures
-importlib.reload(hspace.measures)
-
+import measures
 # making coordinate transformation code generic
 # first we have to select the first non-zero value of each coord x,y,z and this will correspond to the "res" value
 #that we chose
@@ -122,7 +118,7 @@ def calc_entropy(block_array, output, n):
     
         for j in np.arange(0,block_array.shape[1],n):
             for k in np.arange(0,block_array.shape[3],n):
-                ie[j,k] = hspace.measures.joint_entropy(block_array[:,j,i,k])
+                ie[j,k] = measures.joint_entropy(block_array[:,j,i,k])
         
         slice_entropy.append(ie)
         ie_mean_array.append(ie.mean())
