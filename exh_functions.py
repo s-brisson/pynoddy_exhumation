@@ -112,22 +112,22 @@ def disturb_value(event, prop, stdev):
     return new_val
 
 
-def disturb(PH_local, ndraw):
+def disturb(PH_local, std_list, ndraw):
     data = []
     for event_name, event in PH_local.events.items():
         if isinstance(event, pynoddy.events.Fault):
-            new_dip = disturb_percent(event, 'Dip', percent=5)
-            new_dipdir = disturb_percent(event, 'Dip Direction', percent=5)
-            new_pitch = disturb_percent(event, 'Pitch', percent=5)
-            new_slip = disturb_value(event, 'Slip', 400)
-            new_amp = disturb_value(event, 'Amplitude', 100)
-            new_x = disturb_value(event, 'X', 50)
-            new_z = disturb_value(event, 'Z', 75)
-            data.append([event_name, new_dip, new_dipdir, new_pitch, new_slip, new_amp, new_x, new_z, ndraw])
+            new_slip = disturb_value(event, 'Slip', std_list[0])
+            new_amp = disturb_value(event, 'Amplitude', std_list[1])
+            new_x = disturb_value(event, 'X', std_list[2])
+            #new_dip = disturb_percent(event, 'Dip', percent=5)
+            new_dipdir = disturb_percent(event, 'Dip Direction', std_list[3])
+            #new_pitch = disturb_percent(event, 'Pitch', percent=5)
+            #new_z = disturb_value(event, 'Z', 75)
+            data.append([event_name, new_slip, new_amp, new_x, new_dipdir, ndraw])
     
-    columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z','nDraw']
+    columns = ['Event', 'New Slip', 'New Amplitude', 'New X', 'New Dip Direction','nDraw']
     df = pd.DataFrame(data, columns=columns)
-    return df
+    return data, df
 
 
 def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0, unique_label="20235555555555_AAAAAA"):
