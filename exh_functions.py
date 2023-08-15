@@ -175,7 +175,7 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
         
         #coords = np.array(coords)
             
-    return coords, N1
+    return coords, N1, hist_copy
 
 #INVERSION FUNCTIONS
 def create_pdf(mean, std_dev):
