@@ -177,4 +177,58 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
             
     return coords, N1
 
-  
+#INVERSION FUNCTIONS
+def create_pdf(mean, std_dev):
+    def pdf(x):
+        coeff = 1 / (std_dev * np.sqrt(2 * np.pi))
+        exponent = - ((x - mean) ** 2) / (2 * std_dev ** 2)
+        return coeff * np.exp(exponent)
+    return pdf
+
+def prior_dist(og_params,proposed_params,std_list):
+    prior_prob = 1.0
+    for i in range(len(og_params)):
+        for j in range(len(std_list)-1):
+            pdf = create_pdf(og_params[i][j+1], std_list[j])
+            prior_prob *= pdf(proposed_params[i][j+1])
+    return prior_prob
+
+def likelihood(samples_df):
+    likelihood = 1.0
+    
+    for i in range(len(samples_df)):
+        if samples_df.iloc[i]['group'] in ['a']:
+            if samples_df.iloc[i]['exhumation'] < 30: #non reset AFT sample (B60, always accepted) strict
+                likelihood *= 10
+                
+            else:
+                proximity = (samples_df.iloc[i]['exhumation'][0] - 30) / 30
+                rf = np.exp(-25 * proximity)
+                likelihood *= rf
+                
+        
+        elif samples_df.iloc[i]['group'] in ['b']:
+            if samples_df.iloc[i]['exhumation'] > 48: #reset AFT sample (B10, never accepted) not strict
+                likelihood *= 30
+            else:
+                #proximity = (48 - samples_df.iloc[i]['exhumation'][0]) / 48
+                #rf = np.exp(-2 * proximity)
+                likelihood *= 5
+                
+                
+        elif samples_df.iloc[i]['group'] in ['c']: #this should be a strict criteria #reset AHe, partially reset AFT
+            if samples_df.iloc[i]['exhumation'] > 32 and samples_df.iloc[i]['exhumation'] < 48:
+                likelihood *= 10
+            else:
+                likelihood *= 0.05
+                
+        elif samples_df.iloc[i]['group'] in ['d']: #reset AHe samples
+            if samples_df.iloc[i]['exhumation'] > 32:
+                likelihood *= 10
+            else:
+                proximity = (32 - samples_df.iloc[i]['exhumation'][0]) / 32
+                rf = np.exp(-10 * proximity)
+                likelihood *= rf
+        else:
+            print('this is not a group')
+    return likelihood
