@@ -1,7 +1,7 @@
 
 from exh_functions import *
 from exh_processing import *
-from default_config import * 
+from default_configs import * 
 import numpy as np
 import pandas as pd
 import copy, pickle, os
