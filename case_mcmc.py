@@ -99,7 +99,7 @@ for i in range(n_draws):
     while accepted < n_draws:
 
         #a random model is proposed and its exhumation block is calclated
-        proposed_params,_ = disturb(current_hist, std_list, i)
+        proposed_params,proposed_params_df = disturb(current_hist, std_list, i)
 
         proposed_coords, proposed_out, proposed_hist = exhumationComplex(current_hist, lith, res, interval, upperlim)
         exh_block, _ = exhumation_grid_single(proposed_coords, out_hd, res, zdim+1)
@@ -117,9 +117,10 @@ for i in range(n_draws):
 
             #store
             scores.append([model_score, i])
-            all_params = pd.concat([all_params, current_params], ignore_index = True)
             accepted += 1
         #otherwise reject
+        
+        all_params = pd.concat([all_params, proposed_params_df], ignore_index = True)
 
 scores = pd.DataFrame(scores, columns = ['Score', 'iteration'])
 all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
