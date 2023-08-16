@@ -165,5 +165,5 @@ def interp_and_score(E,samples,cubesize,res,zdim,min_depth,grid):
             samples.loc[i,'respected'] += 1
         else:
             model_score += 0
-    
+    samples['exhumation'] = exhumation
     return model_score, samples
