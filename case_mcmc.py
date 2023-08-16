@@ -101,7 +101,7 @@ for i in range(n_draws):
         #a random model is proposed and its exhumation block is calclated
         proposed_params,proposed_params_df = disturb(current_hist, std_list, i)
 
-        proposed_coords, proposed_out, proposed_hist = exhumationComplex(current_hist, lith, res, interval, upperlim)
+        proposed_coords, proposed_out, proposed_hist = exhumationComplex(i,current_hist, lith, res, interval, upperlim)
         exh_block, _ = exhumation_grid_single(proposed_coords, out_hd, res, zdim+1)
         #interpolation step
         model_score, proposed_exhumation = interp_and_score(exh_block, samples, cubesize, res, zdim, min_depth, grid)
