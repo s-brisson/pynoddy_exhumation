@@ -107,9 +107,11 @@ for i in range(n_draws):
         #interpolation step
         model_score, proposed_exhumation = interp_and_score(exh_block, samples, cubesize, res, zdim, min_depth, grid)
         print(f"ndraw {i} model_score {model_score}")
+        
         #accept or reject step
         acceptance_ratio = (prior_dist(original_params,proposed_params,std_list) * likelihood(proposed_exhumation)) / (prior_dist(original_params,current_params,std_list) * likelihood(current_exhumation))
-        
+        print(f"ndraw {i} acceptance_ratio {acceptance_ratio}")
+      
         if acceptance_ratio > np.random.rand(1):
             #accept
             current_params = proposed_params
