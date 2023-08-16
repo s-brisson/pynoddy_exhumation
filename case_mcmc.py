@@ -84,7 +84,7 @@ std_list = [400,100,50,5]
 
 print(f"[{time_string()}] Calculating original exhumation")
 current_coords, current_out,_ = exhumationComplex(0,current_hist, lith, res, interval, upperlim)
-current_exh_block, _ = exhumation_grid_single(current_coords, current_out, res, zdim+1)
+current_exh_block, _ = exhumation_grid_single(current_coords, current_out, res, zdim)
 samples['respected'] = 0
 model_score, current_exhumation = interp_and_score(current_exh_block, samples, cubesize, res, zdim, min_depth, grid)
 
