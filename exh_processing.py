@@ -147,19 +147,19 @@ def interp_and_score(E,samples,cubesize,res,zdim,min_depth,grid):
         samples_copy.loc[i, 'exhumation'] = exhumation[i]
     
         #assign a score to the model
-        if samples_copy.iloc[i]['group'] in ['a'] and samples_copy.iloc[i]['exhumation'] < 20:
+        if samples_copy.iloc[i]['group'] in ['a'] and samples_copy.iloc[i]['exhumation'] < 30:
             model_score += 1
             samples.loc[i,'respected'] += 1
-        elif samples_copy.iloc[i]['group'] in ['b'] and samples_copy.iloc[i]['exhumation'] > 40:
+        elif samples_copy.iloc[i]['group'] in ['b'] and samples_copy.iloc[i]['exhumation'] > 48:
             model_score += 1
             samples.loc[i,'respected'] += 1
-        elif samples_copy.iloc[i]['group'] in ['c'] and samples_copy.iloc[i]['exhumation'] > 27 and samples_copy.iloc[i]['exhumation'] < 40:
+        elif samples_copy.iloc[i]['group'] in ['c'] and samples_copy.iloc[i]['exhumation'] > 32 and samples_copy.iloc[i]['exhumation'] < 48:
             model_score += 1
             samples.loc[i,'respected'] += 1
-        elif samples_copy.iloc[i]['group'] in ['d'] and samples_copy.iloc[i]['exhumation'] > 27:
+        elif samples_copy.iloc[i]['group'] in ['d'] and samples_copy.iloc[i]['exhumation'] > 32:
             model_score += 1
             samples.loc[i,'respected'] += 1
         else:
             model_score += 0
-    
+    samples['exhumation'] = exhumation
     return model_score, samples
