@@ -89,6 +89,7 @@ samples['respected'] = 0
 model_score, current_exhumation = interp_and_score(current_exh_block, samples, cubesize, res, zdim, min_depth, grid)
 
 #ACTUAL SIMULATION
+print(f"[{time_string()}] Starting MCMC")
 scores = []
 accepted = 0
 all_params = pd.DataFrame(columns = ['Event', 'Slip','Amplitude', 'X','Dip Direction', 'n_draw'])
