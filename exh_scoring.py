@@ -71,7 +71,7 @@ grid = (x,y,z)
 #for storage
 all_coords = []
 all_blocks = np.ndarray((n_draws, out_hd.nx, out_hd.ny, out_hd.nz), dtype = 'int')
-all_params = pd.DataFrame(columns = ['Event', 'New Dip', 'New Dip Direction', 'New Pitch', 'New Slip', 'New Amplitude', 'New X', 'New Z','nDraw'])
+all_params = pd.DataFrame(columns = ['Event', 'New Slip', 'New Amplitude', 'New X', 'New Dip Direction','nDraw'])
 all_scores = []
 samples_df = pd.read_csv(samples, delimiter = ',')
 sections = np.empty((n_draws, out_hd.nx, out_hd.nz))
@@ -79,16 +79,17 @@ sections = np.empty((n_draws, out_hd.nx, out_hd.nz))
 
 #starting counter 
 samples_df['respected'] = 0
+std_list = [400,100,50,5]
 
 #simulation starting
 for i in tqdm(range(n_draws), desc = 'Lets score em all'):
     hist_copy = copy.deepcopy(hist) 
     
     #add uncertainty and save model parameters
-    new_params = disturb(hist_copy,i)
+    _,new_params = disturb(hist_copy,std_list,i)
     
     #calculate exhumation for the new model
-    coords, output = exhumationComplex(i, hist_copy, lith, res, interval, upperlim, unique_label = label)
+    coords, output,_ = exhumationComplex(i, hist_copy, lith, res, interval, upperlim, unique_label = label)
     
     #interpolate exhumation for each sample position
     #value to interpolate
