@@ -7,7 +7,7 @@ save_overall = True
 #### Modeling params
 cubesize = 100
 lith = [11] 
-zdim = 33
+zdim = 65
 
 #### OUTPUTS
 output_folder = "data/outputs"

@@ -1,4 +1,3 @@
-
 from exh_functions import *
 from exh_processing import *
 from default_configs import * 
@@ -18,7 +17,7 @@ res = args.resolution #samples coord every res voxels
 interval = args.interval #calculates exhumation every interval m 
 
 label = generate_unique_label()
-
+current_coords_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/og_coords_100.npy"
 #model_coords_folder = f"{output_folder}/{model_name}/model_coords/{args.folder}/"
 #model_blocks_folder = f"{output_folder}/{model_name}/model_blocks/{args.folder}/"
 model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
@@ -82,8 +81,19 @@ for event_name, event in hist.events.items():
         original_params.append((event_name, slip, amplitude, x, dipdir))
 std_list = [400,100,50,5]
 
+
+
+
 print(f"[{time_string()}] Calculating original exhumation")
-current_coords, current_out,_ = exhumationComplex(0,current_hist, lith, res, interval, upperlim)
+
+if os.path.exists(current_coords_path):
+    current_coords = np.load(current_coords_path)
+    current_out = out_hd
+    print(f"Found existing coordinates. \nLoaded {current_coords_path} successfully.")
+else:
+    print(f"Could not find {current_coords_path}. \nRunning exhumation on the spot")
+    current_coords, current_out,_ = exhumationComplex(0,current_hist, lith, res, interval, upperlim)
+    
 current_exh_block, _ = exhumation_grid_single(current_coords, current_out, res, zdim)
 samples['respected'] = 0
 model_score, current_exhumation = interp_and_score(current_exh_block, samples, cubesize, res, zdim, min_depth, grid)
