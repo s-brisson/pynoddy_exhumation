@@ -249,15 +249,18 @@ def calc_new_position(hist, diff, og_depths, samples):
     
     return samples, samples_noddy_pos 
 
-def disturb_property(PH_local, prop, std):
+def disturb_property(PH_local, event_list, prop_list, std_list):
     data = []
-    for event_name, event in PH_local.events.items():
-        if isinstance(event, pynoddy.events.Fault):
-            new_value = disturb_value(event, prop, std)
-            data.append([event_name, new_value])
+    for i in event_list:
+        event_data = [i]
+        for j, prop in enumerate(prop_list):
+            new_param = disturb_value(PH_local.events[i], prop_list[j], std_list[j])
+            event_data.append(new_param)
+            
+        data.append(event_data)
+    col = ['event_name'] + prop_list
+    df = pd.DataFrame(data, columns = col)
     
-    columns = ['Event', f"New {prop}"]
-    df = pd.DataFrame(data, columns=columns)
     return data, df
 
 def likelihood_and_score(samples_df):
