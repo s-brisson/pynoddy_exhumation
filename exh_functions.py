@@ -232,3 +232,77 @@ def likelihood(samples_df):
         else:
             print('this is not a group')
     return likelihood
+
+#MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
+def calc_new_position(hist, diff, og_depths, samples):
+    samples_noddy_pos = []
+    for i in np.arange(11,21):
+        p,_,out = ExtractCoords(hist, lith = [i], res = 1)
+        t = p[...,2].min()
+        
+        z = (t*1000) / 3681.39
+        
+        samples_noddy_pos.append(z)
+        
+    proposed_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
+    samples['exhumation'] = proposed_exhumation
+    
+    return samples, samples_noddy_pos 
+
+def disturb_property(PH_local, prop, std):
+    data = []
+    for event_name, event in PH_local.events.items():
+        if isinstance(event, pynoddy.events.Fault):
+            new_value = disturb_value(event, prop, std)
+            data.append([event_name, new_value])
+    
+    columns = ['Event', f"New {prop}"]
+    df = pd.DataFrame(data, columns=columns)
+    return data, df
+
+def likelihood_and_score(samples_df):
+    
+    likelihood = 1.0
+    model_score = 0
+    
+    for i in range(len(samples_df)):
+        if samples_df.iloc[i]['group'] in ['a']:
+            if samples_df.iloc[i]['exhumation'] < 3000: #non reset AFT sample (B60, always accepted) strict
+                likelihood *= 2
+                model_score += 1
+                samples_df.loc[i,'respected'] += 1
+                
+            else:
+                proximity = (samples_df.iloc[i]['exhumation'] - 3000) / 3000
+                rf = np.exp(-proximity)
+                likelihood *= rf
+                
+        
+        elif samples_df.iloc[i]['group'] in ['b']:
+            if samples_df.iloc[i]['exhumation'] > 4800: #reset AFT sample (B10, never accepted) not strict
+                likelihood *= 2
+                model_score += 1
+                samples_df.loc[i,'respected'] += 1
+            else:
+                proximity = (4800 - samples_df.iloc[i]['exhumation']) / 4800
+                rf = np.exp(-proximity)
+                likelihood *= rf
+                
+        elif samples_df.iloc[i]['group'] in ['c']: #this should be a strict criteria #reset AHe, partially reset AFT
+            if samples_df.iloc[i]['exhumation'] > 3200 and samples_df.iloc[i]['exhumation'] < 4800:
+                likelihood *= 4
+                model_score += 1
+                samples_df.loc[i,'respected'] += 1
+            else:
+                likelihood *= 0.05
+                
+        elif samples_df.iloc[i]['group'] in ['d']: #reset AHe samples
+            if samples_df.iloc[i]['exhumation'] > 3200:
+                likelihood *= 2
+                model_score += 1
+                samples_df.loc[i,'respected'] += 1
+            else:
+                proximity = (3200 - samples_df.iloc[i]['exhumation']) / 3200
+                rf = np.exp(-proximity)
+                likelihood *= rf
+    return likelihood, model_score, samples_df
