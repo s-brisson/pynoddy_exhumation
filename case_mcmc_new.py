@@ -47,7 +47,7 @@ print(f"[{time_string()}] Running the HD model")
 pynoddy.compute_model(hist_hd, out_hd, noddy_path = noddy_exe)
 out_hd = pynoddy.output.NoddyOutput(out_hd)
 
-samples = pd.load_csv(samples,delimiter = ',')
+samples = pd.read_csv(samples,delimiter = ',')
 
 #DEFINE IMPORTANT VALUES
 og_depths = []
