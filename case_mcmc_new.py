@@ -90,6 +90,7 @@ score = []
 
 print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
+    print(f"[{time_string()}] Processing run number {i}")
     while accepted < n_draws:
         hist_copy = copy.deepcopy(hist)
 
