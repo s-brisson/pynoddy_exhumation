@@ -243,10 +243,10 @@ def likelihood(samples_df):
     return likelihood
 
 #MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
-def calc_new_position(hist, diff, og_depths, samples):
+def calc_new_position(hist, diff, og_depths, samples, unique_label):
     samples_noddy_pos = []
     for i in np.arange(11,21):
-        p,_,out = ExtractCoords(hist, lith = [i], res = 1)
+        p,_,out = ExtractCoords(hist, lith = [i], res = 1, unique_label = unique_label)
         t = p[...,2].min()
         
         z = (t*1000) / 3681.39
