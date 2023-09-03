@@ -62,7 +62,7 @@ for i in range(len(samples)):
     samples_z.append(z)
 
  #CALCULATING ORIGINAL EXHUMATION
-
+print(f"[{time_string()}] Calculating original exhumation")
 _,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, samples,label)   
 diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
 current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
@@ -88,6 +88,7 @@ current_params = og_params
 score = []
 #accepted_params = pd.DataFrame(columns = ['Event', f"New {prop}", 'n_draw'])
 
+print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
     while accepted < n_draws:
         hist_copy = copy.deepcopy(hist)
