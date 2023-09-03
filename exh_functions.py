@@ -40,7 +40,7 @@ def parser():
 def parser_new():
     parser = argparse.ArgumentParser(description="stochastic simulation of exhumation from a kinematic modeling")
     parser.add_argument("ndraws", help="Number of simulations to be run",type=int)
-    parser.add_argument("events", type=int, help="Event to modify")
+    parser.add_argument("events", help="Event to modify")
     parser.add_argument("property", help="property to change")
     parser.add_argument("standard_deviation", help = "uncertainty added to each property")
     parser.add_argument("--folder", help="folder where to store the output files", type=str, required=False, default="test")
