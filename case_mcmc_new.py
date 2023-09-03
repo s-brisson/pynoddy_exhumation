@@ -63,7 +63,7 @@ for i in range(len(samples)):
 
  #CALCULATING ORIGINAL EXHUMATION
 
-_,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, samples)   
+_,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, samples,label)   
 diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
 current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
 samples['exhumation'] = current_exhumation
@@ -93,7 +93,7 @@ for i in range(n_draws):
         hist_copy = copy.deepcopy(hist)
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,prop,std)
-        proposed_exhumation,_ = calc_new_position(hist_copy, diff, og_depths, samples)
+        proposed_exhumation,_ = calc_new_position(hist_copy, diff, og_depths, samples,label)
 
         #calculate likelihood and priors
         current_likelihood,current_score,current_samples = likelihood_and_score(current_exhumation)
