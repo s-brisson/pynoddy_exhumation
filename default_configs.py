@@ -8,6 +8,7 @@ save_overall = True
 #### Modeling params
 cubesize = 100
 lith = [11] 
+lith_list = [13]
 zdim = 65
 
 #### OUTPUTS
