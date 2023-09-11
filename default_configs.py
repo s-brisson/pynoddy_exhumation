@@ -9,6 +9,7 @@ save_overall = True
 cubesize = 100
 lith = [11] 
 lith_list = [13]
+sample_num = 2
 zdim = 65
 
 #### OUTPUTS
