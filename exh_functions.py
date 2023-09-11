@@ -243,19 +243,19 @@ def likelihood(samples_df):
     return likelihood
 
 #MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
-def calc_new_position(hist, diff, og_depths, samples, unique_label):
+def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
     samples_noddy_pos = []
-    for i in np.arange(11,21):
-        p,_,out = ExtractCoords(hist, lith = [i], res = 1, unique_label = unique_label)
+    for i in lith_list:
+        p,_,out = ExtractCoords(hist, lith = [i], res = 1,unique_label = unique_label)
         t = p[...,2].min()
-        
         z = (t*1000) / 3681.39
-        
         samples_noddy_pos.append(z)
-        
-    proposed_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
-    samples['exhumation'] = proposed_exhumation
     
+    if len(lith_list) > 1:
+        proposed_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
+    else:
+        proposed_exhumation = samples_noddy_pos - diff - og_depths
+    samples['exhumation'] = proposed_exhumation
     return samples, samples_noddy_pos 
 
 def disturb_property(PH_local, event_list, prop_list, std_list):
