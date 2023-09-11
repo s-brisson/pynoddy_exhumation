@@ -63,12 +63,11 @@ for i in range(len(samples)):
 
  #CALCULATING ORIGINAL EXHUMATION
 print(f"[{time_string()}] Calculating original exhumation")
-_,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, samples,label)   
+all_liths = np.arange(11,21)
+_,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, all_liths,samples,label)   
 diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
 current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
 samples['exhumation'] = current_exhumation
-
-current_exhumation = samples
 samples['respected'] = 0
 
 og_params = []
@@ -85,8 +84,10 @@ og_params_df = pd.DataFrame(og_params, columns = col)
 #SIMULATION
 accepted = 0
 current_params = og_params
-score = []
-#accepted_params = pd.DataFrame(columns = ['Event', f"New {prop}", 'n_draw'])
+current_exhumation = samples.loc[sample_num].copy()
+
+accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
+rejected_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 
 print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
@@ -94,8 +95,9 @@ for i in range(n_draws):
     while accepted < n_draws:
         hist_copy = copy.deepcopy(hist)
 
-        proposed_params, proposed_params_df = disturb_property(hist_copy,prop,std)
-        proposed_exhumation,_ = calc_new_position(hist_copy, diff, og_depths, samples,label)
+        proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
+        proposed_exhumation,_ = calc_new_position(hist_copy, diff[sample_num], 
+                                                  og_depths[sample_num],lith_list, samples.loc[sample_num].copy(),label)
 
         #calculate likelihood and priors
         current_likelihood,current_score,current_samples = likelihood_and_score(current_exhumation)
@@ -104,7 +106,8 @@ for i in range(n_draws):
         proposed_prior = prior_dist(og_params, proposed_params, std)
 
         print(f"Model score: {proposed_score}")
-
+        print(f"proposed exhumation {proposed_exhumation.loc['exhumation']}")
+        
         #accept or reject
         acceptance_ratio = (proposed_prior*proposed_likelihood) / (current_prior*current_likelihood)
         print(f"Acceptance ratio: {acceptance_ratio}")
@@ -113,16 +116,19 @@ for i in range(n_draws):
         print(f"Random threshold: {random_n}")
 
         if acceptance_ratio > random_n:
+            current_params_df = proposed_params_df
             current_params = proposed_params
             current_exhumation = proposed_exhumation
             accepted += 1
 
             #store stuff
             score.append([proposed_score, i])
-            accepted_params = pd.concat([accepted_params, current_params], ignore_index=True)
+            accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
+        else:
+            rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
 
 scores = pd.DataFrame(score, columns = ['score', 'iteration'])
-#accepted_params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False)
+accepted_params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False)
 
 print(f"[{time_string()}] Complete")
 clean(label)
