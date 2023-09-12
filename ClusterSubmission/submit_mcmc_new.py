@@ -10,8 +10,8 @@ ndraws = args.ndraws
 events = args.events  # Events as a list
 #elif isinstance(args.events, int):
 #    events = [args.events]  # Convert single integer to a list
-else:
-    raise ValueError("Invalid input for 'events' argument")
+#else:
+#    raise ValueError("Invalid input for 'events' argument")
 property = args.property #property that will be disturbed
 standard_deviation = args.standard_deviation #uncertainty assigned to the property
 folder = args.folder
