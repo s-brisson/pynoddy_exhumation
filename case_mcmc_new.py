@@ -18,7 +18,7 @@ prop = args.property #property that will be disturbed
 std = args.standard_deviation #uncertainty assigned to the property
 
 label = generate_unique_label()
-
+current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
 model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
 model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
 model_samples_folder = f"{output_folder}/{model_name}/model_samples/{args.folder}/"
@@ -63,12 +63,19 @@ for i in range(len(samples)):
 
  #CALCULATING ORIGINAL EXHUMATION
 print(f"[{time_string()}] Calculating original exhumation")
-all_liths = np.arange(11,21)
-_,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, all_liths,samples,label)   
-diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
-current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
-samples['exhumation'] = current_exhumation
-samples['respected'] = 0
+
+if os.path.exists(current_exh_path):
+    print(f"[{time_string()}] Found existing data.")
+    samples = pd.read_csv(current_exh_path)
+  
+else:
+    print(f"[{time_string()}] Calculating from scratch.")
+    all_liths = np.arange(11,21)
+    _,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, all_liths,samples,label)   
+    diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
+    current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
+    samples['exhumation'] = current_exhumation
+    samples['respected'] = 0
 
 og_params = []
 for i in event:
