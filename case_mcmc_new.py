@@ -51,9 +51,9 @@ samples = pd.read_csv(samples,delimiter = ',')
 
 #DEFINE IMPORTANT VALUES
 og_depths = []
-for event_name, event in hist.events.items():
-    if isinstance(event, pynoddy.events.Plug):
-        z = event.properties['Z']  
+for event_name, evento in hist.events.items():
+    if isinstance(evento, pynoddy.events.Plug):
+        z = evento.properties['Z']  
         og_depths.append(z)
 
 samples_z = []
@@ -73,8 +73,8 @@ samples['respected'] = 0
 og_params = []
 for i in event:
     event_data = [i]
-    for j, prop in enumerate(prop):
-        propert = hist.events[i].properties[prop]
+    for j, props in enumerate(prop):
+        propert = hist.events[i].properties[props]
         event_data.append(propert)
     og_params.append(event_data)
     
