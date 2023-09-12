@@ -318,3 +318,55 @@ def likelihood_and_score(samples_df):
                 rf = np.exp(-proximity)
                 likelihood *= rf
     return likelihood, model_score, samples_df
+
+def simple_likelihood(samples_df):
+    likelihood = 1.0
+    model_score = 0
+    
+    
+    if samples_df.loc['group'] in ['a']:
+        if samples_df.loc['exhumation'] < 3000: #non reset AFT sample (B60, always accepted) strict
+            likelihood *= 2
+            model_score += 1
+            samples_df.loc['respected'] += 1
+            
+        else:
+            proximity = (samples_df.loc['exhumation'] - 3000) / 3000
+            rf = np.exp(-proximity)
+            likelihood *= rf
+            
+    
+    elif samples_df.loc['group'] in ['b']:
+        if samples_df.loc['exhumation'] > 4800: #reset AFT sample (B10, never accepted) not strict
+            likelihood *= 2
+            model_score += 1
+            samples_df.loc['respected'] += 1
+        else:
+            proximity = (4800 - samples_df.loc['exhumation']) / 4800
+            rf = np.exp(-proximity)
+            likelihood *= rf
+            
+    elif samples_df.loc['group'] in ['c']: #this should be a strict criteria #reset AHe, partially reset AFT
+        if samples_df.loc['exhumation'] > 3200 and samples_df.loc['exhumation'] < 4800:
+            likelihood *= 4
+            model_score += 1
+            samples_df.loc['respected'] += 1
+        else:
+            likelihood *= 0.05
+            
+    elif samples_df.loc['group'] in ['d']: #reset AHe samples
+        if samples_df.loc['exhumation'] > 3200:
+            likelihood *= 100
+            model_score += 1
+            samples_df.loc['respected'] += 1
+        else:
+            proximity = abs(3200 - samples_df.loc['exhumation'])
+            if proximity <= 200:
+                rf = np.exp(-proximity/ 3200)
+            else:
+                rf = np.exp(-20*proximity / 3200)
+            likelihood *= (rf) 
+    
+    return likelihood, model_score, samples_df
+            
+            
