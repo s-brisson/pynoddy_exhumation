@@ -42,7 +42,7 @@ def parser_new():
     parser.add_argument("ndraws", help="Number of simulations to be run",type=int)
     parser.add_argument("events", help="Event to modify", type = int)
     parser.add_argument("property", help="property to change", nargs = '+', type = str)
-    parser.add_argument("standard_deviation", help = "uncertainty added to each property", nargs = '+', type = int)
+    parser.add_argument("--standard_deviation", help = "uncertainty added to each property", nargs = '+', type = int)
     parser.add_argument("--folder", help="folder where to store the output files", type=str, required=False, default="test")
     return parser
 
