@@ -102,6 +102,7 @@ current_params = og_params
 current_exhumation = samples.loc[sample_num].copy()
 score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
+accepted_exhumation = []
 rejected_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 
 print(f"[{time_string()}] Starting MCMC")
@@ -140,11 +141,16 @@ for i in range(n_draws):
             #store stuff
             score.append([proposed_score, i])
             accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
+            accepted_exhumation.append(current_exhumation.loc['exhumation'])
         else:
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
 
+#SAVE THE STUFF TO THE CLUSTER
+print(f"[{time_string()}] Saving all the important shit")
 scores = pd.DataFrame(score, columns = ['score', 'iteration'])
-accepted_params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False)
+accepted_params.to_csv(f"{model_params_folder}/acc_params_{label}.csv", index = False)
+rejected_params.to_csv(f"{model_params_folder}/rej_params_{label}.csv", index = False)
+np.save(f"{model_params_folder}/accepted_exhumation_{label}.npy", accepted_exhumation)
 
 print(f"[{time_string()}] Complete")
 clean(label)
