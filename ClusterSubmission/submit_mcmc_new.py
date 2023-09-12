@@ -6,7 +6,7 @@ executable = "/home/ho640525/projects/Exhumation/ClusterSubmission/execute_mcmc_
 created_parser = parser()
 args = created_parser.parse_args()
 
-ndraws,events,property,standard_deviation,folder = args.ndraws, args.events,args.property, args.standard_deviation, args.folder
+ndraws,event,property,standard_deviation,folder = args.ndraws, args.events,args.property, args.standard_deviation, args.folder
 
 """
 THE SUBMISSION LOGIC
