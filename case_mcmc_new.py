@@ -13,7 +13,12 @@ from os import makedirs
 created_parser = parser_new()
 args = created_parser.parse_args()
 n_draws = args.ndraws
-events = args.events if len(args.events) > 1 else args.events[0]
+if isinstance(args.events, list):
+    event = args.events  # Events as a list
+elif isinstance(args.events, int):
+    event = [args.events]  # Convert single integer to a list
+else:
+    raise ValueError("Invalid input for 'events' argument")
 prop = args.property #property that will be disturbed
 std = args.standard_deviation #uncertainty assigned to the property
 
