@@ -100,7 +100,7 @@ og_params_df = pd.DataFrame(og_params, columns = col)
 accepted = 0
 current_params = og_params
 current_exhumation = samples.loc[sample_num].copy()
-
+score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 rejected_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 
