@@ -5,8 +5,15 @@ from os import system,makedirs
 executable = "/home/ho640525/projects/Exhumation/ClusterSubmission/execute_mcmc_new.sh"
 created_parser = parser_new()
 args = created_parser.parse_args()
-
-ndraws,events,property,standard_deviation,folder = args.ndraws, args.events,args.property, args.standard_deviation, args.folder
+n_draws = args.ndraws
+if isinstance(args.events, list):
+    event = args.events  # Events as a list
+elif isinstance(args.events, int):
+    event = [args.events]  # Convert single integer to a list
+else:
+    raise ValueError("Invalid input for 'events' argument")
+prop = args.property #property that will be disturbed
+std = args.standard_deviation #uncertainty assigned to the property
 
 """
 THE SUBMISSION LOGIC
