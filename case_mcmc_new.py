@@ -13,7 +13,7 @@ from os import makedirs
 created_parser = parser_new()
 args = created_parser.parse_args()
 n_draws = args.ndraws
-event = args.events
+events = args.events if len(args.events) > 1 else args.events[0]
 prop = args.property #property that will be disturbed
 std = args.standard_deviation #uncertainty assigned to the property
 
