@@ -115,8 +115,8 @@ for i in range(n_draws):
                                                   og_depths[sample_num],lith_list, samples.loc[sample_num].copy(),label)
 
         #calculate likelihood and priors
-        current_likelihood,current_score,current_samples = likelihood_and_score(current_exhumation)
-        proposed_likelihood,proposed_score,proposed_samples = likelihood_and_score(proposed_exhumation)
+        current_likelihood,current_score,current_samples = simple_likelihood(current_exhumation)
+        proposed_likelihood,proposed_score,proposed_samples = simple_likelihood(proposed_exhumation)
         current_prior = prior_dist(og_params, current_params, std)
         proposed_prior = prior_dist(og_params, proposed_params, std)
 
