@@ -12,7 +12,7 @@ events = args.events  # Events as a list
 #    events = [args.events]  # Convert single integer to a list
 #else:
 #    raise ValueError("Invalid input for 'events' argument")
-properties = args.property.split(',') if args.property else []  # Split comma-separated values into a list
+properties = args.property # Split comma-separated values into a list
 standard_deviations = args.standard_deviation
 folder = args.folder
 
