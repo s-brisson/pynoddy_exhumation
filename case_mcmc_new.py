@@ -79,8 +79,10 @@ else:
 
 og_params = []
 for i in event:
+    print(f"[{time_string()}] event = {i}")
     event_data = [i]
     for j, props in enumerate(prop):
+        print(f"[{time_string()}] analyzing prop {props}")
         propert = hist.events[i].properties[props]
         event_data.append(propert)
     og_params.append(event_data)
