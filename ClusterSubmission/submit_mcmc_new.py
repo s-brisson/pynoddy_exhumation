@@ -3,7 +3,7 @@ from exh_functions import *
 from os import system,makedirs
 
 executable = "/home/ho640525/projects/Exhumation/ClusterSubmission/execute_mcmc_new.sh"
-created_parser = parser()
+created_parser = parser_new()
 args = created_parser.parse_args()
 
 ndraws,events,property,standard_deviation,folder = args.ndraws, args.events,args.property, args.standard_deviation, args.folder
