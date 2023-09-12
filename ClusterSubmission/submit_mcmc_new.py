@@ -6,10 +6,10 @@ executable = "/home/ho640525/projects/Exhumation/ClusterSubmission/execute_mcmc_
 created_parser = parser_new()
 args = created_parser.parse_args()
 ndraws = args.ndraws
-if isinstance(args.events, list):
-    events = args.events  # Events as a list
-elif isinstance(args.events, int):
-    events = [args.events]  # Convert single integer to a list
+#if isinstance(args.events, list):
+events = args.events  # Events as a list
+#elif isinstance(args.events, int):
+#    events = [args.events]  # Convert single integer to a list
 else:
     raise ValueError("Invalid input for 'events' argument")
 property = args.property #property that will be disturbed
