@@ -72,6 +72,7 @@ print(f"[{time_string()}] Calculating original exhumation")
 if os.path.exists(current_exh_path):
     print(f"[{time_string()}] Found existing data.")
     samples = pd.read_csv(current_exh_path)
+    diff = np.load("/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/diff.npy")
   
 else:
     print(f"[{time_string()}] Calculating from scratch.")
