@@ -12,8 +12,8 @@ events = args.events  # Events as a list
 #    events = [args.events]  # Convert single integer to a list
 #else:
 #    raise ValueError("Invalid input for 'events' argument")
-properties = args.property.split(',')
-standard_deviations = [int(sd) for sd in args.standard_deviation.split(',')]
+properties = args.property
+standard_deviations = args.standard_deviation
 folder = args.folder
 
 """
