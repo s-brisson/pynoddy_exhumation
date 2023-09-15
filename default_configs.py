@@ -16,3 +16,5 @@ zdim = 65
 #### OUTPUTS
 output_folder = "data/outputs"
 model_name = "bregenz"
+
+maps = [[21,29387,-744.58,-10283.4,4536.86]]
