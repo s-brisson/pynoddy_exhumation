@@ -20,7 +20,10 @@ interval = args.interval #calculates exhumation every interval m
 label = generate_unique_label()
 
 model_exhumation_folder = f"{output_folder}/{model_name}/model_exhumation/{args.folder}/"
+model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
+
 makedirs(model_exhumation_folder,exist_ok=True)
+makedirs(model_params_folder,exist_ok=True)
 
 print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
@@ -73,7 +76,8 @@ for i in range(len(all_params)):
     model_coords,_,_ = exhumationComplex(i,hist_copy, lith, res, interval, upperlim, label) 
     exh_block,_ = exhumation_grid_single(model_coords, out_hd, res, zdim)
 
-    np.save(f"{model_exhumation_folder}/exh_block_{label}.npy", exh_block)
+    np.save(f"{model_exhumation_folder}/exh_block_{label}_row{i}.npy", exh_block)
+    np.save(f"{model_params_folder}/params_{label}_row{i}.npy", all_params[i])
 
 print(f"[{time_string()}] Complete")
 clean(label)
