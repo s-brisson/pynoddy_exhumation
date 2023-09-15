@@ -83,24 +83,35 @@ else:
     samples['exhumation'] = current_exhumation
     samples['respected'] = 0
 
-og_params = []
-for i in event:
-    print(f"[{time_string()}] event = {i}")
-    event_data = [i]
-    for j, props in enumerate(prop):
-        print(f"[{time_string()}] analyzing prop {props}")
-        propert = hist.events[i].properties[props]
-        event_data.append(propert)
-    og_params.append(event_data)
+#og_params = []
+#for i in event:
+#    print(f"[{time_string()}] event = {i}")
+#    event_data = [i]
+#    for j, props in enumerate(prop):
+#        print(f"[{time_string()}] analyzing prop {props}")
+#        propert = hist.events[i].properties[props]
+#        event_data.append(propert)
+#    og_params.append(event_data)
     
-col = ['event_name'] + prop
-og_params_df = pd.DataFrame(og_params, columns = col)
+#col = ['event_name'] + prop
+#og_params_df = pd.DataFrame(og_params, columns = col)
+
+##################################
+#DEFINE NEW INITIAL MODEL WITH MAPS
+hist_copy = copy.deepcopy(hist)
+for i, p in enumerate(prop):
+    hist_copy.events[event].properties[p] = maps[0][i+1]
+
+current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
+                                        og_depths[sample_num], lith_list, samples.loc[sample_num].copy())
+og_params = maps
+###################################
 
 #SIMULATION
 accepted = 0
 total_runs = 0
 current_params = og_params
-current_exhumation = samples.loc[sample_num].copy()
+#current_exhumation = samples.loc[sample_num].copy()
 score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 accepted_exhumation = []
