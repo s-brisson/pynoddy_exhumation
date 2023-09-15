@@ -98,6 +98,7 @@ og_params_df = pd.DataFrame(og_params, columns = col)
 
 #SIMULATION
 accepted = 0
+total_runs = 0
 current_params = og_params
 current_exhumation = samples.loc[sample_num].copy()
 score = []
@@ -107,7 +108,7 @@ rejected_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 
 print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
-    print(f"[{time_string()}] Processing run number {i}")
+
     while accepted < n_draws:
         hist_copy = copy.deepcopy(hist)
 
@@ -145,6 +146,9 @@ for i in range(n_draws):
         else:
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
 
+        total_runs += 1
+
+print(f"The acceptance rate was: {accepted / total_runs}")
 #SAVE THE STUFF TO THE CLUSTER
 print(f"[{time_string()}] Saving all the important shit")
 scores = pd.DataFrame(score, columns = ['score', 'iteration'])
