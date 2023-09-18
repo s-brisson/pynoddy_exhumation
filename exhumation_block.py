@@ -12,11 +12,13 @@ from exh_processing import *
 from default_configs import *
 from os import makedirs
 
-created_parser = parser()
+created_parser = parser_exh_block()
 args = created_parser.parse_args()
 n_draws = args.ndraws
 res = args.resolution #samples coord every res voxels
 interval = args.interval #calculates exhumation every interval m 
+start_param = args.start_param
+end_param = args.end_param
 label = generate_unique_label()
 
 model_exhumation_folder = f"{output_folder}/{model_name}/model_exhumation/{args.folder}/"
