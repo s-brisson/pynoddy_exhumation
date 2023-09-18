@@ -104,6 +104,7 @@ for i, p in enumerate(prop):
 
 current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
                                         og_depths[sample_num], lith_list, samples.loc[sample_num].copy(), label)
+print(f"Current exhumation: {current_exhumation}")
 og_params = maps
 ###################################
 
