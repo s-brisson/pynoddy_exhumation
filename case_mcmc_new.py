@@ -100,7 +100,7 @@ else:
 #DEFINE NEW INITIAL MODEL WITH MAPS
 hist_copy = copy.deepcopy(hist)
 for i, p in enumerate(prop):
-    hist_copy.events[event].properties[p] = maps[0][i+1]
+    hist_copy.events[21].properties[p] = maps[0][i+1]
 
 current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
                                         og_depths[sample_num], lith_list, samples.loc[sample_num].copy())
