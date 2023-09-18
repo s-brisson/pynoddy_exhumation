@@ -3,10 +3,10 @@ from exh_functions import *
 from os import system,makedirs
 
 executable = "/home/ho640525/projects/Exhumation/ClusterSubmission/execute_exh_block.sh"
-created_parser = parser()
+created_parser = parser_exh_block()
 args = created_parser.parse_args()
 
-ndraws,interval,resolution,folder = args.ndraws,args.interval, args.resolution, args.folder
+ndraws,interval,resolution,folder,start_param,end_param = args.ndraws,args.interval, args.resolution, args.folder, args.start_param,args.end_param
 
 N_SIMULATIONS_PER_JOB = 10
 
@@ -36,7 +36,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
             sout.write(f"#SBATCH --array=1-{n_jobs}\n")
             sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
             sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
-            sout.write(f"{executable} {N_SIMULATIONS_PER_JOB} {interval} {resolution} {folder}\n")
+            sout.write(f"{executable} {N_SIMULATIONS_PER_JOB} {interval} {resolution} {folder} {start_param} {end_param}\n")
 
     if  n_job_modulus!= 0:
         with open(JobSubFile_Modulus, 'w') as sout:
@@ -53,7 +53,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
             sout.write(f"#SBATCH --array=1-1\n")
             sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
             sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
-            sout.write(f"{executable} {n_job_modulus} {interval} {resolution} {folder}\n")
+            sout.write(f"{executable} {n_job_modulus} {interval} {resolution} {folder} {start_param} {end_param}\n")
     
     if n_jobs!=0 and n_job_modulus!=0:
         return JobSubFile_Groupable, JobSubFile_Modulus
