@@ -31,7 +31,7 @@ Now if we want to run 54 simulations we can do
 1 JOB of 4 simulations (modulus JOB)
 """
 
-N_SIMULATIONS_PER_JOB = 100
+N_SIMULATIONS_PER_JOB = 1000
 
 def generateSubFile(ndraws,events,properties,standard_deviations,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
