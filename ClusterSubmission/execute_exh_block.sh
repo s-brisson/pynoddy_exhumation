@@ -11,7 +11,7 @@ cd /home/ho640525/projects/Exhumation
 source /home/ho640525/.cache/pypoetry/virtualenvs/exhumation-IrWm4u2d-py3.8/bin/activate
 export PYTHONPATH=$PYTHONPATH:/home/ho640525/projects/pynoddy/pynoddy
 
-input_file="home/ho640525/projects/Exhumation/data/input_files/TrainingsParametersKinematicModelAlpsFault1-4.npy"
+input_file="/home/ho640525/projects/Exhumation/data/input_files/TrainingsParametersKinematicModelAlpsFault1-4.npy"
 total_params=$(python -c "import numpy as np; arr = np.load("$input_file"); total_params = len(arr); print(total_params)")
 
 params_per_node=10
