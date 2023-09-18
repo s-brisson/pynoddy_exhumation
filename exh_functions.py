@@ -362,9 +362,9 @@ def simple_likelihood(samples_df):
         else:
             proximity = abs(3200 - samples_df.loc['exhumation'])
             if proximity <= 200:
-                rf = np.exp(-proximity/ 3200)
+                rf = np.exp(-40*proximity/ 3200)
             else:
-                rf = np.exp(-20*proximity / 3200)
+                rf = np.exp(-50*proximity / 3200)
             likelihood *= (rf) 
     
     return likelihood, model_score, samples_df
