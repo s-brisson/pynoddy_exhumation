@@ -125,9 +125,12 @@ for i in range(n_draws):
         hist_copy = copy.deepcopy(hist)
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
-        proposed_exhumation,_ = calc_new_position(hist_copy, diff[sample_num], 
-                                                  og_depths[sample_num],lith_list, samples.loc[sample_num].copy(),label)
-
+        try:
+            proposed_exhumation,_ = calc_new_position(hist_copy, diff[sample_num], 
+                                                      og_depths[sample_num],lith_list, samples.loc[sample_num].copy(),label)
+        except IndexError:
+            continue
+            
         #calculate likelihood and priors
         current_likelihood,current_score,current_samples = simple_likelihood(current_exhumation)
         proposed_likelihood,proposed_score,proposed_samples = simple_likelihood(proposed_exhumation)
@@ -151,14 +154,19 @@ for i in range(n_draws):
             accepted += 1
             print(f"accepted model number {accepted}")
 
-            #store stuff
+            #store stuff for each run
+            np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", accepted_params)
+            
+            #store stuff for later
             score.append([proposed_score, i])
             accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
             accepted_exhumation.append(current_exhumation.loc['exhumation'])
         else:
+            np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", accepted_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
 
         total_runs += 1
+        print(f"Total runs: {total_runs}")
 
 print(f"The acceptance rate was: {accepted / total_runs}")
 #SAVE THE STUFF TO THE CLUSTER
