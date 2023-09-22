@@ -82,37 +82,40 @@ else:
     current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
     samples['exhumation'] = current_exhumation
     samples['respected'] = 0
+diff = [diff[i] for i in sample_num]
+og_depths = [og_depths[i] for i in sample_num]
+samples = samples.iloc[sample_num]
 
-#og_params = []
-#for i in event:
-#    print(f"[{time_string()}] event = {i}")
-#    event_data = [i]
-#    for j, props in enumerate(prop):
-#        print(f"[{time_string()}] analyzing prop {props}")
-#        propert = hist.events[i].properties[props]
-#        event_data.append(propert)
-#    og_params.append(event_data)
+og_params = []
+for i in event:
+    print(f"[{time_string()}] event = {i}")
+    event_data = [i]
+    for j, props in enumerate(prop):
+        print(f"[{time_string()}] analyzing prop {props}")
+        propert = hist.events[i].properties[props]
+        event_data.append(propert)
+    og_params.append(event_data)
     
-#col = ['event_name'] + prop
-#og_params_df = pd.DataFrame(og_params, columns = col)
+col = ['event_name'] + prop
+og_params_df = pd.DataFrame(og_params, columns = col)
 
 ##################################
 #DEFINE NEW INITIAL MODEL WITH MAPS
-hist_copy = copy.deepcopy(hist)
-for i, p in enumerate(prop):
-    hist_copy.events[21].properties[p] = maps[0][i+1]
+#hist_copy = copy.deepcopy(hist)
+#for i, p in enumerate(prop):
+#    hist_copy.events[21].properties[p] = maps[0][i+1]
 
-current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
+#current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
                                         og_depths[sample_num], lith_list, samples.loc[sample_num].copy(), label)
-print(f"Current exhumation: {current_exhumation}")
-og_params = maps
+#print(f"Current exhumation: {current_exhumation}")
+#og_params = maps
 ###################################
 
 #SIMULATION
 accepted = 0
 total_runs = 0
 current_params = og_params
-#current_exhumation = samples.loc[sample_num].copy()
+current_exhumation = samples.loc[sample_num].copy()
 score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 accepted_exhumation = []
@@ -126,19 +129,19 @@ for i in range(n_draws):
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
         try:
-            proposed_exhumation,_ = calc_new_position(hist_copy, diff[sample_num], 
-                                                      og_depths[sample_num],lith_list, samples.loc[sample_num].copy(),label)
+            proposed_exhumation,_ = calc_new_position(hist_copy, diff, 
+                                                      og_depths,lith_list, samples.copy(),label)
         except IndexError:
             continue
             
         #calculate likelihood and priors
-        current_likelihood,current_score,current_samples = simple_likelihood(current_exhumation)
-        proposed_likelihood,proposed_score,proposed_samples = simple_likelihood(proposed_exhumation)
+        current_likelihood,current_score,current_samples = likelihood_and_score(current_exhumation)
+        proposed_likelihood,proposed_score,proposed_samples = likelihood_and_score(proposed_exhumation)
         current_prior = prior_dist(og_params, current_params, std)
         proposed_prior = prior_dist(og_params, proposed_params, std)
 
         print(f"Model score: {proposed_score}")
-        print(f"proposed exhumation {proposed_exhumation.loc['exhumation']}")
+        #print(f"proposed exhumation {proposed_exhumation.loc['exhumation']}")
         
         #accept or reject
         acceptance_ratio = (proposed_prior*proposed_likelihood) / (current_prior*current_likelihood)
@@ -160,7 +163,7 @@ for i in range(n_draws):
             #store stuff for later
             score.append([proposed_score, i])
             accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
-            accepted_exhumation.append(current_exhumation.loc['exhumation'])
+            #accepted_exhumation.append(current_exhumation.loc['exhumation'])
         else:
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", accepted_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)

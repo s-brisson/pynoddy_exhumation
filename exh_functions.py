@@ -46,16 +46,6 @@ def parser_new():
     parser.add_argument("--folder", help="folder where to store the output files", type=str, required=False, default="test")
     return parser
 
-def parser_exh_block():
-    parser = argparse.ArgumentParser(description="stochastic simulation of exhumation from a kinematic modeling")
-    parser.add_argument("ndraws", help="Number of simulations to be run",type=int)
-    parser.add_argument("interval", type=int, help="Indicator layer z-axis step size")
-    parser.add_argument("resolution", help="samples coord every res voxels",  choices=[8,16,32,64],type=int)
-    parser.add_argument("--folder", help="folder where to store the output files", type=str, required=False, default="test")
-    parser.add_argument("--start_param", help="start parameter index", type=int)
-    parser.add_argument("--end_param", help="end parameter index", type=int)
-    return parser
-
 # function to clean temporary files
 def clean(label):
     os.system(f"rm {output_folder}/noddy/*{label}*")
@@ -281,7 +271,7 @@ def disturb_property(PH_local, event_list, prop_list, std_list):
     df = pd.DataFrame(data, columns = col)
     
     return data, df
-
+    
 def likelihood_and_score(samples_df):
     
     likelihood = 1.0
@@ -290,14 +280,17 @@ def likelihood_and_score(samples_df):
     for i in range(len(samples_df)):
         if samples_df.iloc[i]['group'] in ['a']:
             if samples_df.iloc[i]['exhumation'] < 3000: #non reset AFT sample (B60, always accepted) strict
-                likelihood *= 2
+                likelihood *= 100
                 model_score += 1
                 samples_df.loc[i,'respected'] += 1
                 
             else:
-                proximity = (samples_df.iloc[i]['exhumation'] - 3000) / 3000
-                rf = np.exp(-proximity)
-                likelihood *= rf
+                proximity = abs(3000 - samples_df.iloc[i]['exhumation'])
+                if proximity <= 1000:
+                    likelihood *= 5
+                #rf = np.exp(-proximity)
+                else:
+                    likelihood *= 0.5
                 
         
         elif samples_df.iloc[i]['group'] in ['b']:
@@ -312,22 +305,32 @@ def likelihood_and_score(samples_df):
                 
         elif samples_df.iloc[i]['group'] in ['c']: #this should be a strict criteria #reset AHe, partially reset AFT
             if samples_df.iloc[i]['exhumation'] > 3200 and samples_df.iloc[i]['exhumation'] < 4800:
-                likelihood *= 4
+                likelihood *= 100
                 model_score += 1
                 samples_df.loc[i,'respected'] += 1
             else:
-                likelihood *= 0.05
+                proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
+                if proximity <= 2000
+                    likelihood *= 5
+                else:
+                    likelihood *= 0.5
                 
         elif samples_df.iloc[i]['group'] in ['d']: #reset AHe samples
             if samples_df.iloc[i]['exhumation'] > 3200:
-                likelihood *= 2
+                likelihood *= 5
                 model_score += 1
                 samples_df.loc[i,'respected'] += 1
             else:
-                proximity = (3200 - samples_df.iloc[i]['exhumation']) / 3200
-                rf = np.exp(-proximity)
-                likelihood *= rf
+                proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
+                if proximity <= 200:
+                    rf = np.exp(-5*proximity/ 3200)
+                else:
+                    rf = np.exp(-20*proximity / 3200)
+                likelihood *= (rf) 
+                
     return likelihood, model_score, samples_df
+            
+            
 
 def simple_likelihood(samples_df):
     likelihood = 1.0
