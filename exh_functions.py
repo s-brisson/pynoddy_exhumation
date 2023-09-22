@@ -310,7 +310,7 @@ def likelihood_and_score(samples_df):
                 samples_df.loc[i,'respected'] += 1
             else:
                 proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
-                if proximity <= 2000
+                if proximity <= 2000:
                     likelihood *= 5
                 else:
                     likelihood *= 0.5
