@@ -106,7 +106,7 @@ og_params_df = pd.DataFrame(og_params, columns = col)
 #    hist_copy.events[21].properties[p] = maps[0][i+1]
 
 #current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
-                                        og_depths[sample_num], lith_list, samples.loc[sample_num].copy(), label)
+#                                        og_depths[sample_num], lith_list, samples.loc[sample_num].copy(), label)
 #print(f"Current exhumation: {current_exhumation}")
 #og_params = maps
 ###################################
