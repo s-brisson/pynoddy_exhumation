@@ -13,14 +13,14 @@ from os import makedirs
 created_parser = parser_new()
 args = created_parser.parse_args()
 n_draws = args.ndraws
-if isinstance(args.events, list):
-    event = args.events  # Events as a list
-elif isinstance(args.events, int):
-    event = [args.events]  # Convert single integer to a list
-else:
+#if isinstance(args.events, list):
+#    event = args.events  # Events as a list
+#elif isinstance(args.events, int):
+#    event = [args.events]  # Convert single integer to a list
+#else:
     raise ValueError("Invalid input for 'events' argument")
-prop = args.property #property that will be disturbed
-std = args.standard_deviation #uncertainty assigned to the property
+#prop = args.property #property that will be disturbed
+#std = args.standard_deviation #uncertainty assigned to the property
 
 label = generate_unique_label()
 current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
@@ -158,14 +158,14 @@ for i in range(n_draws):
             print(f"accepted model number {accepted}")
 
             #store stuff for each run
-            np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", accepted_params)
+            np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", current_params)
             
             #store stuff for later
             score.append([proposed_score, i])
             accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
             #accepted_exhumation.append(current_exhumation.loc['exhumation'])
         else:
-            np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", accepted_params)
+            np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", proposed_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
 
         total_runs += 1
