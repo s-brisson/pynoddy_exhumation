@@ -7,13 +7,13 @@ created_parser = parser_new()
 args = created_parser.parse_args()
 ndraws = args.ndraws
 #if isinstance(args.events, list):
-events = args.events  # Events as a list
+#events = args.events  # Events as a list
 #elif isinstance(args.events, int):
 #    events = [args.events]  # Convert single integer to a list
 #else:
 #    raise ValueError("Invalid input for 'events' argument")
-properties = args.property
-standard_deviations = args.standard_deviation
+#properties = args.property
+#standard_deviations = args.standard_deviation
 folder = args.folder
 
 """
@@ -33,7 +33,7 @@ Now if we want to run 54 simulations we can do
 
 N_SIMULATIONS_PER_JOB = 1000
 
-def generateSubFile(ndraws,events,properties,standard_deviations,folder):
+def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
 
     timestamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())
@@ -61,7 +61,7 @@ def generateSubFile(ndraws,events,properties,standard_deviations,folder):
             sout.write(f"#SBATCH --array=1-{n_jobs}\n")
             sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
             sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
-            sout.write(f"{executable} {N_SIMULATIONS_PER_JOB} {events} {properties} {standard_deviations} {folder}\n")
+            sout.write(f"{executable} {N_SIMULATIONS_PER_JOB} {folder}\n")
 
     if  n_job_modulus!= 0:
         with open(JobSubFile_Modulus, 'w') as sout:
@@ -78,7 +78,7 @@ def generateSubFile(ndraws,events,properties,standard_deviations,folder):
             sout.write(f"#SBATCH --array=1-1\n")
             sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
             sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
-            sout.write(f"{executable} {n_job_modulus} {events} {properties} {standard_deviations} {folder}\n")
+            sout.write(f"{executable} {n_job_modulus} {folder}\n")
 
     if n_jobs!=0 and n_job_modulus!=0:
         return JobSubFile_Groupable, JobSubFile_Modulus
@@ -93,6 +93,6 @@ def generateSubFile(ndraws,events,properties,standard_deviations,folder):
         return None, None
 
 if __name__=="__main__":
-    fnameGroup, fnameModul = generateSubFile(ndraws,events,properties, standard_deviations,folder)
+    fnameGroup, fnameModul = generateSubFile(ndraws,folder)
     for k in [fnameGroup, fnameModul]:
         if k is not None:  system(f"sbatch {k}")
