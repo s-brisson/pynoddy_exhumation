@@ -18,7 +18,7 @@ n_draws = args.ndraws
 #elif isinstance(args.events, int):
 #    event = [args.events]  # Convert single integer to a list
 #else:
-    raise ValueError("Invalid input for 'events' argument")
+#    raise ValueError("Invalid input for 'events' argument")
 #prop = args.property #property that will be disturbed
 #std = args.standard_deviation #uncertainty assigned to the property
 
