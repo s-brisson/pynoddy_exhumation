@@ -8,9 +8,8 @@ save_each = False
 save_overall = True
 #### Modeling params
 cubesize = 100
-lith = [11] 
-lith_list = [13]
-sample_num = 2
+lith = [11] #lith ID for the indicator layer.
+
 zdim = 65
 
 #### OUTPUTS
@@ -18,3 +17,10 @@ output_folder = "data/outputs"
 model_name = "bregenz"
 
 maps = [[21,29387,-744.58,-10283.4,4536.86]]
+
+#INPUTS FOR MCMC (without indicator layer)
+event = [20,21,22,24] #events to modify
+prop = ['Z','Slip'] #properties to modify
+std = [500,1000] #
+lith_list = [12,13,15,17] #lith IDs for the samples being analyzed.
+sample_num = [1,2,4,6] #sample indices
