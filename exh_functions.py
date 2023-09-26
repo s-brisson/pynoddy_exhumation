@@ -279,14 +279,14 @@ def likelihood_and_score(samples_df):
     
     for i in range(len(samples_df)):
         if samples_df.iloc[i]['group'] in ['a']:
-            if samples_df.iloc[i]['exhumation'] < 3000: #non reset AFT sample (B60, always accepted) strict
+            if samples_df.iloc[i]['exhumation'] < 4500: #non reset AFT sample (B60, always accepted) strict
                 likelihood *= 100
                 model_score += 1
                 samples_df.loc[i,'respected'] += 1
                 
             else:
-                proximity = abs(3000 - samples_df.iloc[i]['exhumation'])
-                if proximity <= 1000:
+                proximity = abs(4500 - samples_df.iloc[i]['exhumation'])
+                if proximity <= 500:
                     likelihood *= 5
                 #rf = np.exp(-proximity)
                 else:
