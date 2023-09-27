@@ -137,7 +137,8 @@ for i in range(n_draws):
                                                       og_depths,lith_list, samples.copy(),label)
         except IndexError:
             continue
-            
+        proposed_exhumation.reset_index(drop=True,inplace=True)    
+        
         #calculate likelihood and priors
         current_likelihood,current_score,current_samples = likelihood_and_score(current_exhumation)
         proposed_likelihood,proposed_score,proposed_samples = likelihood_and_score(proposed_exhumation)
