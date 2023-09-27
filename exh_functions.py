@@ -102,7 +102,7 @@ def ExtractCoords(hist_moment, lith, res, unique_label):
     np.set_printoptions(precision=2) #two decimal places
     np.set_printoptions(suppress=True) #don't use scientific notation
 
-    return points, num_list, N1
+    return points, num_list, N1, temp_hist
 
 def disturb_percent(event, prop, percent = 30):
     """Disturb the property of an event by a given percentage, assuming a normal distribution"""
