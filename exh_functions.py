@@ -246,7 +246,7 @@ def likelihood(samples_df):
 def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
     samples_noddy_pos = []
     for i in lith_list:
-        p,_,out = ExtractCoords(hist, lith = [i], res = 1,unique_label = unique_label)
+        p,_,out,new_hist = ExtractCoords(hist, lith = [i], res = 1,unique_label = unique_label)
         t = p[...,2].min()
         z = (t*1000) / 3681.39
         samples_noddy_pos.append(z)
@@ -256,7 +256,7 @@ def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
     else:
         proposed_exhumation = samples_noddy_pos - diff - og_depths
     samples['exhumation'] = proposed_exhumation
-    return samples, samples_noddy_pos 
+    return samples, samples_noddy_pos, new_hist 
 
 def disturb_property(PH_local, event_list, prop_list, std_list):
     data = []
