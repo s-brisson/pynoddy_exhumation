@@ -16,7 +16,9 @@ zdim = 65
 output_folder = "data/outputs"
 model_name = "bregenz"
 
-maps = [[21,29387,-744.58,-10283.4,4536.86]]
+maps = [[21,-744.58,-10283.4],
+       [22,2204,-9843.7],
+       [23,-2345.5,-11878.5]]
 
 #INPUTS FOR MCMC (without indicator layer)
 event = [21,22,24] #events to modify
