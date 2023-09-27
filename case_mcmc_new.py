@@ -134,7 +134,7 @@ for i in range(n_draws):
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
         try:
-            proposed_exhumation,_,proposed_hist = calc_new_position(hist_copy, diff, 
+            proposed_exhumation,_,new_hist = calc_new_position(hist_copy, diff, 
                                                       og_depths,lith_list, samples.copy(),label)
         except IndexError:
             continue
@@ -165,7 +165,7 @@ for i in range(n_draws):
             #store stuff for each run
             np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", current_params)
             acc_hist = f'{output_folder}/history/acc_hist_{label}.his'
-            os.rename(proposed_hist, acc_hist)
+            os.rename(new_hist, acc_hist)
             
             #store stuff for later
             score.append([proposed_score, i])
@@ -175,7 +175,7 @@ for i in range(n_draws):
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", proposed_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
             rej_hist = f'{output_folder}/history/rej_hist_{label}.his'
-            os.rename(proposed_hist, rej_hist)
+            os.rename(new_hist, rej_hist)
 
         total_runs += 1
         print(f"Total runs: {total_runs}")
