@@ -6,7 +6,9 @@ import pynoddy.output
 import pandas as pd
 import numpy as np
 import copy 
+import os
 from exh_functions import *
+from exh_processing import *
 from default_configs import *
 from os import makedirs
 
@@ -27,10 +29,12 @@ current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/in
 model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
 model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
 model_samples_folder = f"{output_folder}/{model_name}/model_samples/{args.folder}/"
+model_histories_folder = f"{output_folder}/{model_name}/model_histories/{args.folder}/"
 
 makedirs(model_scores_folder,exist_ok=True)
 makedirs(model_params_folder,exist_ok=True)
 makedirs(model_samples_folder,exist_ok=True)
+makedirs(model_histories_folder,exist_ok=True)
 
 print(f"[{time_string()}] {'Simulating based on file':<40} {history_samples}")
 print(f"[{time_string()}] {'Simulating based on observation':<40} {samples}")
@@ -77,7 +81,7 @@ if os.path.exists(current_exh_path):
 else:
     print(f"[{time_string()}] Calculating from scratch.")
     all_liths = np.arange(11,21)
-    _,samples_noddy_pos = calc_new_position(hist, og_depths, og_depths, all_liths,samples,label)   
+    _,samples_noddy_pos,_ = calc_new_position(hist, og_depths, og_depths, all_liths,samples,label)   
     diff = [x - y for x, y in zip(samples_noddy_pos, samples_z)]
     current_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
     samples['exhumation'] = current_exhumation
@@ -105,7 +109,7 @@ og_params_df = pd.DataFrame(og_params, columns = col)
 #for i, p in enumerate(prop):
 #    hist_copy.events[21].properties[p] = maps[0][i+1]
 
-#current_exhumation,_ = calc_new_position(hist_copy, diff[sample_num],
+#current_exhumation,_,_ = calc_new_position(hist_copy, diff[sample_num],
 #                                        og_depths[sample_num], lith_list, samples.loc[sample_num].copy(), label)
 #print(f"Current exhumation: {current_exhumation}")
 #og_params = maps
@@ -116,6 +120,7 @@ accepted = 0
 total_runs = 0
 current_params = og_params
 current_exhumation = samples.loc[sample_num].copy()
+#STORAGE
 score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 accepted_exhumation = []
@@ -129,7 +134,7 @@ for i in range(n_draws):
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
         try:
-            proposed_exhumation,_ = calc_new_position(hist_copy, diff, 
+            proposed_exhumation,_,proposed_hist = calc_new_position(hist_copy, diff, 
                                                       og_depths,lith_list, samples.copy(),label)
         except IndexError:
             continue
@@ -159,6 +164,8 @@ for i in range(n_draws):
 
             #store stuff for each run
             np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", current_params)
+            acc_hist = f'{output_folder}/history/acc_hist_{unique_label}.his'
+            os.rename(proposed_hist, acc_hist)
             
             #store stuff for later
             score.append([proposed_score, i])
@@ -167,6 +174,8 @@ for i in range(n_draws):
         else:
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", proposed_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
+            rej_hist = f'{output_folder}/history/rej_hist_{unique_label}.his'
+            os.rename(proposed_hist, rej_hist)
 
         total_runs += 1
         print(f"Total runs: {total_runs}")
