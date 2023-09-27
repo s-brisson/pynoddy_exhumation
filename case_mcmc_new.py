@@ -114,6 +114,7 @@ current_exhumation,_,_ = calc_new_position(hist_copy, diff,
 og_params = maps
 ###################################
 
+current_exhumation.reset_index(drop=True,inplace=True)
 #SIMULATION
 accepted = 0
 total_runs = 0
