@@ -163,8 +163,8 @@ for i in range(n_draws):
             print(f"accepted model number {accepted}")
 
             #store stuff for each run
-            np.save(f"{model_params_folder}/accepted_params_{label}_draw{i}.npy", current_params)
-            acc_hist = f'{model_histories_folder}/acc_hist_{label}.his'
+            np.save(f"{model_params_folder}/accepted_params_{label}_draw{total_runs}.npy", current_params)
+            acc_hist = f'{model_histories_folder}/acc_hist_{label}_draw{total_runs}.his'
             os.rename(new_hist, acc_hist)
             
             #store stuff for later
@@ -174,7 +174,7 @@ for i in range(n_draws):
         else:
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", proposed_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
-            rej_hist = f'{model_histories_folder}/rej_hist_{label}.his'
+            rej_hist = f'{model_histories_folder}/rej_hist_{label}_draw{total_runs}.his'
             os.rename(new_hist, rej_hist)
 
         total_runs += 1
