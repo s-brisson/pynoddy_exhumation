@@ -170,7 +170,7 @@ for i in range(n_draws):
             #store stuff for later
             score.append([proposed_score, i])
             accepted_params = pd.concat([accepted_params, current_params_df], ignore_index=True)
-            #accepted_exhumation.append(current_exhumation.loc['exhumation'])
+            accepted_exhumation.append(current_exhumation['exhumation'])
         else:
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{total_runs}.npy", proposed_params)
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
