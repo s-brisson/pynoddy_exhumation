@@ -129,7 +129,7 @@ print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
 
     while accepted < n_draws:
-        hist_copy = copy.deepcopy(hist)
+        #hist_copy = copy.deepcopy(hist)
 
         proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
         try:
