@@ -16,13 +16,13 @@ zdim = 65
 output_folder = "data/outputs"
 model_name = "bregenz"
 
-maps = [[21,-744.58,-10283.4],
-       [22,2204,-9843.7],
-       [23,-2345.5,-11878.5]]
+maps = [[21,-1000,-11000],
+       [22,2000,-9500],
+       [23,-2000,-5000]]
 
 #INPUTS FOR MCMC (without indicator layer)
 event = [21,22,24] #events to modify
 prop = ['Z','Slip'] #properties to modify
-std = [300,800] #
+std = [150,400] #
 lith_list = [13,15,17] #lith IDs for the samples being analyzed.
 sample_num = [2,4,6] #sample indices
