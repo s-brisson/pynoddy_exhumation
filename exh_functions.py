@@ -197,9 +197,9 @@ def create_pdf(mean, std_dev):
 def prior_dist(og_params,proposed_params,std_list):
     prior_prob = 1.0
     for i in range(len(og_params)):
-        for j in range(len(std_list)-1):
-            pdf = create_pdf(og_params[i][j+1], std_list[j])
-            prior_prob *= pdf(proposed_params[i][j+1])
+        for j in range(len(std_list)):
+            pdf = create_pdf(og_params[i][j], std_list[j])
+            prior_prob *= pdf(proposed_params[i][j])
     return prior_prob
 
 def likelihood(samples_df):
