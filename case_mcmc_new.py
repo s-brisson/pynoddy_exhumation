@@ -124,6 +124,8 @@ accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 accepted_exhumation = []
 rejected_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
 
+mcmcstats_df = pd.DataFrame(columns=['curr likelihood', 'prop likelihood', 'curr prior', 'prop prior'])
+
 print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
 
@@ -144,7 +146,9 @@ for i in range(n_draws):
         current_prior = prior_dist(og_params, current_params, std)
         proposed_prior = prior_dist(og_params, proposed_params, std)
         print(current_likelihood, proposed_likelihood, current_prior, proposed_prior)
-
+        mcmcstats_df.loc[i] = current_likelihood, proposed_likelihood, current_prior, proposed_prior
+        mcmcstats_df.to_csv(f"{model_params_folder}/mcmc_stats_{label}.csv", index = False)        
+      
         print(f"Model score: {proposed_score}")
         print(f"proposed exhumation {proposed_exhumation['exhumation']}")
         
