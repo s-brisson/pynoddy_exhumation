@@ -280,7 +280,7 @@ def likelihood_and_score(samples_df):
     for i in range(len(samples_df)):
         if samples_df.iloc[i]['group'] in ['a']:
             if samples_df.iloc[i]['exhumation'] < 4500: #non reset AFT sample (B60, always accepted) strict
-                likelihood *= 100
+                likelihood *= 10
                 model_score += 1
                 samples_df.copy().iloc[i]['respected'] += 1
                 
@@ -317,7 +317,7 @@ def likelihood_and_score(samples_df):
                 
         elif samples_df.iloc[i]['group'] in ['d']: #reset AHe samples
             if samples_df.iloc[i]['exhumation'] > 3200:
-                likelihood *= 10
+                likelihood *= 5
                 model_score += 1
                 samples_df.copy().iloc[i]['respected'] += 1
             else:
