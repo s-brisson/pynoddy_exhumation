@@ -104,12 +104,11 @@ samples = samples.iloc[sample_num]
 
 ##################################
 #DEFINE NEW INITIAL MODEL WITH MAPS
-hist_copy = copy.deepcopy(hist)
 for j, e in enumerate(event):
     for i, p in enumerate(prop):
-        hist_copy.events[e].properties[p] = maps[j][i+1]
+        hist.events[e].properties[p] = maps[j][i+1]
 
-current_exhumation,_,_ = calc_new_position(hist_copy, diff,
+current_exhumation,_,_ = calc_new_position(hist, diff,
                                         og_depths, lith_list, samples.copy(), label)
 og_params = maps
 ###################################
@@ -129,11 +128,11 @@ print(f"[{time_string()}] Starting MCMC")
 for i in range(n_draws):
 
     while accepted < n_draws:
-        #hist_copy = copy.deepcopy(hist)
+        proposed_hist = copy.deepcopy(hist)
 
-        proposed_params, proposed_params_df = disturb_property(hist_copy,event,prop,std)
+        proposed_params, proposed_params_df = disturb_property(proposed_hist,event,prop,std)
         try:
-            proposed_exhumation,_,new_hist = calc_new_position(hist_copy, diff, 
+            proposed_exhumation,_,new_hist = calc_new_position(proposed_hist, diff, 
                                                       og_depths,lith_list, samples.copy(),label)
         except IndexError:
             continue
@@ -160,6 +159,7 @@ for i in range(n_draws):
             current_params_df = proposed_params_df
             current_params = proposed_params
             current_exhumation = proposed_exhumation
+            hist = new_hist
             accepted += 1
             print(f"accepted model number {accepted}")
 
