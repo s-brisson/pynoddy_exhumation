@@ -146,10 +146,10 @@ for i in range(n_draws):
         print(current_likelihood, proposed_likelihood, current_prior, proposed_prior)
 
         print(f"Model score: {proposed_score}")
-        #print(f"proposed exhumation {proposed_exhumation.loc['exhumation']}")
+        print(f"proposed exhumation {proposed_exhumation['exhumation']}")
         
         #accept or reject
-        acceptance_ratio = (proposed_prior*proposed_likelihood) / (current_prior*current_likelihood)
+        acceptance_ratio = (np.log(proposed_prior)*proposed_likelihood) / (np.log(current_prior)*current_likelihood)
         print(f"Acceptance ratio: {acceptance_ratio}")
 
         random_n = np.random.rand(1)
