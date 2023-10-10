@@ -322,7 +322,7 @@ def likelihood_and_score(samples_df):
                 samples_df.copy().iloc[i]['respected'] += 1
             else:
                 proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
-                if proximity <= 200:
+                if proximity <= 100:
                     rf = np.exp(-5*proximity/ 3200)
                 else:
                     rf = np.exp(-20*proximity / 3200)
