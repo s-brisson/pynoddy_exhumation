@@ -149,7 +149,8 @@ for i in range(n_draws):
         print(f"proposed exhumation {proposed_exhumation['exhumation']}")
         
         #accept or reject
-        acceptance_ratio = (np.log(proposed_prior)*proposed_likelihood) / (np.log(current_prior)*current_likelihood)
+        acceptance_ratio_log = (np.log(proposed_prior)*np.log(proposed_likelihood)) / (np.log(current_prior)*np.log(current_likelihood))
+        acceptance_ratio = np.exp(acceptance_ratio_log)
         print(f"Acceptance ratio: {acceptance_ratio}")
 
         random_n = np.random.rand(1)
