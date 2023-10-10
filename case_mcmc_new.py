@@ -118,6 +118,7 @@ current_exhumation.reset_index(drop=True,inplace=True)
 accepted = 0
 total_runs = 0
 current_params = og_params
+target_rate = 0.4
 #STORAGE
 score = []
 accepted_params = pd.DataFrame(columns = ['Event'] + prop + ['n_draw'])
@@ -149,15 +150,25 @@ for i in range(n_draws):
         print(f"proposed exhumation {proposed_exhumation['exhumation']}")
         
         #accept or reject
-        acceptance_ratio = (proposed_prior * proposed_likelihood) / (current_prior * current_likelihood)
-        #acceptance_ratio_log = (np.log(proposed_prior)+np.log(proposed_likelihood)) - (np.log(current_prior)+np.log(current_likelihood))
-        #acceptance_ratio = np.exp(acceptance_ratio_log)
+        #acceptance_ratio = (proposed_prior * proposed_likelihood) / (current_prior * current_likelihood)
+        acceptance_ratio_log = (np.log(proposed_prior)+np.log(proposed_likelihood)) - (np.log(current_prior)+np.log(current_likelihood))
+        acceptance_ratio = np.exp(acceptance_ratio_log)
         print(f"Acceptance ratio: {acceptance_ratio}")
 
-        random_n = np.random.rand(1)
-        print(f"Random threshold: {random_n}")
+        #Adaptive threshold depending on acceptance rate:
+        if total_runs > 0:
+            acceptance_rate = accepted / total_runs
+            if acceptance_rate < target_rate:
+                threshold = np.random.rand(1)
+            else:
+                threshold = 1.0
+        else:
+            threshold = np.random.rand(1)
+        
+        #random_n = np.random.rand(1)
+        print(f"Threshold: {threshold}")
 
-        if acceptance_ratio > random_n:
+        if acceptance_ratio > threshold:
             current_params_df = proposed_params_df
             current_params = proposed_params
             current_exhumation = proposed_exhumation
