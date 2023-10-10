@@ -282,7 +282,7 @@ def likelihood_and_score(samples_df):
             if samples_df.iloc[i]['exhumation'] < 4500: #non reset AFT sample (B60, always accepted) strict
                 likelihood *= 100
                 model_score += 1
-                samples_df.loc[i,'respected'] += 1
+                samples_df.iloc[i]['respected'] += 1
                 
             else:
                 proximity = abs(4500 - samples_df.iloc[i]['exhumation'])
@@ -297,7 +297,7 @@ def likelihood_and_score(samples_df):
             if samples_df.iloc[i]['exhumation'] > 4800: #reset AFT sample (B10, never accepted) not strict
                 likelihood *= 2
                 model_score += 1
-                samples_df.loc[i,'respected'] += 1
+                samples_df.iloc[i]['respected'] += 1
             else:
                 proximity = (4800 - samples_df.iloc[i]['exhumation']) / 4800
                 rf = np.exp(-proximity)
@@ -307,7 +307,7 @@ def likelihood_and_score(samples_df):
             if samples_df.iloc[i]['exhumation'] > 3200 and samples_df.iloc[i]['exhumation'] < 4800:
                 likelihood *= 100
                 model_score += 1
-                samples_df.loc[i,'respected'] += 1
+                samples_df.iloc[i]['respected'] += 1
             else:
                 proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
                 if proximity <= 2000:
@@ -319,7 +319,7 @@ def likelihood_and_score(samples_df):
             if samples_df.iloc[i]['exhumation'] > 3200:
                 likelihood *= 5
                 model_score += 1
-                samples_df.loc[i,'respected'] += 1
+                samples_df.iloc[i]['respected'] += 1
             else:
                 proximity = abs(3200 - samples_df.iloc[i]['exhumation'])
                 if proximity <= 200:
