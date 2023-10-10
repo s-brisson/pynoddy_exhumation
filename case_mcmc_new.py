@@ -144,6 +144,7 @@ for i in range(n_draws):
         proposed_likelihood,proposed_score,proposed_samples = likelihood_and_score(proposed_exhumation)
         current_prior = prior_dist(og_params, current_params, std)
         proposed_prior = prior_dist(og_params, proposed_params, std)
+        print(current_likelihood, proposed_likelihood, current_prior, proposed_prior)
 
         print(f"Model score: {proposed_score}")
         #print(f"proposed exhumation {proposed_exhumation.loc['exhumation']}")
