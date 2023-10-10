@@ -23,6 +23,6 @@ maps = [[21,-1000,-11000],
 #INPUTS FOR MCMC (without indicator layer)
 event = [21,22,24] #events to modify
 prop = ['Z','Slip'] #properties to modify
-std = [150,400] #
+std = [250,400] #
 lith_list = [13,15,17] #lith IDs for the samples being analyzed.
 sample_num = [2,4,6] #sample indices
