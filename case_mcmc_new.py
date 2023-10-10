@@ -159,7 +159,7 @@ for i in range(n_draws):
             current_params_df = proposed_params_df
             current_params = proposed_params
             current_exhumation = proposed_exhumation
-            hist = new_hist
+            hist = proposed_hist
             accepted += 1
             print(f"accepted model number {accepted}")
 
