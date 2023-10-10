@@ -151,7 +151,12 @@ for i in range(n_draws):
         
         #accept or reject
         #acceptance_ratio = (proposed_prior * proposed_likelihood) / (current_prior * current_likelihood)
-        acceptance_ratio_log = (np.log(proposed_prior)+np.log(proposed_likelihood)) - (np.log(current_prior)+np.log(current_likelihood))
+        #acceptance_ratio_log = (np.log(proposed_prior)+np.log(proposed_likelihood)) - (np.log(current_prior)+np.log(current_likelihood))
+        
+        prior_ratio = np.log(proposed_prior) - np.log(current_prior)
+        likelihood_ratio = np.log(proposed_likelihood) - np.log(current_likelihood)
+        balance_factor = 0.3
+        acceptance_ratio_log = balance_factor * prior_ratio + (1 - balance_factor) * likelihood_ratio    
         acceptance_ratio = np.exp(acceptance_ratio_log)
         print(f"Acceptance ratio: {acceptance_ratio}")
 
