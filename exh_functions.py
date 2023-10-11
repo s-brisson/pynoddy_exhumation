@@ -264,7 +264,8 @@ def disturb_property(PH_local, event_list, prop_list, std_list):
         event_data = [i]
         for j, prop in enumerate(prop_list):
             new_param = disturb_value(PH_local.events[i], prop_list[j], std_list[j])
-            event_data.append(new_param)
+            rounded_param = round(new_param, -2) #round it to the nearest hundred (cubesize dependent!)
+            event_data.append(rounded_param)
             
         data.append(event_data)
     col = ['event_name'] + prop_list
