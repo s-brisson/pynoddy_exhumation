@@ -89,7 +89,7 @@ for i in range(n_draws):
     scores.append([i, model_score])
     exhumation.append(new_exhumation['exhumation'])
     all_params = pd.concat([all_params, new_params_df], ignore_index=True)
-    new_hist_name = f'{model_histories_folder}/hist_{label}_draw{total_runs}.his'
+    new_hist_name = f'{model_histories_folder}/hist_{label}_draw{i}.his'
     os.rename(new_hist, new_hist_name)
 
 #store overall
