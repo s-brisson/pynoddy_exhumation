@@ -95,4 +95,4 @@ for i in range(n_draws):
 #store overall
 all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
 samples.to_csv(f'{model_samples_folder}/samples_{label}.csv', index = False)
-np.save('f{model_samples_folder}/exhumation_{label}.npy', exhumation)
+np.save(f'{model_samples_folder}/exhumation_{label}.npy', exhumation)
