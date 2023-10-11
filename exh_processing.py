@@ -165,23 +165,24 @@ def interp_and_score(E,samples,cubesize,res,zdim,min_depth,grid):
     return model_score, samples
 
 def score(samples, exhumation):
-    samples_copy = copy.deepcopy(samples)
-    samples_copy.loc[i, 'exhumation'] = exhumation[i]
-    
+    model_score = 0
+    for i in range(len(samples)):
+        samples_copy = copy.deepcopy(samples)
+        samples_copy.loc[i, 'exhumation'] = exhumation.loc[i,'exhumation']
     #assign a score to the model
-    if samples_copy.iloc[i]['group'] in ['a'] and samples_copy.iloc[i]['exhumation'] < 4500:
-        model_score += 1
-        samples.loc[i,'respected'] += 1
-    elif samples_copy.iloc[i]['group'] in ['b'] and samples_copy.iloc[i]['exhumation'] > 4800:
-        model_score += 1
-        samples.loc[i,'respected'] += 1
-    elif samples_copy.iloc[i]['group'] in ['c'] and samples_copy.iloc[i]['exhumation'] > 3200 and samples_copy.iloc[i]['exhumation'] < 4800:
-        model_score += 1
-        samples.loc[i,'respected'] += 1
-    elif samples_copy.iloc[i]['group'] in ['d'] and samples_copy.iloc[i]['exhumation'] > 3200:
-        model_score += 1
-        samples.loc[i,'respected'] += 1
-    else:
-        model_score += 0
-    samples['exhumation'] = exhumation
+        if samples_copy.iloc[i]['group'] in ['a'] and samples_copy.iloc[i]['exhumation'] < 4500:
+            model_score += 1
+            samples.loc[i,'respected'] += 1
+        elif samples_copy.iloc[i]['group'] in ['b'] and samples_copy.iloc[i]['exhumation'] > 4800:
+            model_score += 1
+            samples.loc[i,'respected'] += 1
+        elif samples_copy.iloc[i]['group'] in ['c'] and samples_copy.iloc[i]['exhumation'] > 3200 and samples_copy.iloc[i]['exhumation'] < 4800:
+            model_score += 1
+            samples.loc[i,'respected'] += 1
+        elif samples_copy.iloc[i]['group'] in ['d'] and samples_copy.iloc[i]['exhumation'] > 3200:
+            model_score += 1
+            samples.loc[i,'respected'] += 1
+        else:
+            model_score += 0
+    samples['exhumation'] = exhumation['exhumation']
     return model_score, samples
