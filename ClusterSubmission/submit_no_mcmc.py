@@ -8,7 +8,7 @@ args = created_parser.parse_args()
 ndraws = args.ndraws
 folder = args.folder
 
-N_SIMULATIONS_PER_JOB = 10
+N_SIMULATIONS_PER_JOB = 100
 
 def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
