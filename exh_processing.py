@@ -183,5 +183,5 @@ def score(samples, exhumation):
         samples.loc[i,'respected'] += 1
     else:
         model_score += 0
-samples['exhumation'] = exhumation
-return model_score, samples
+    samples['exhumation'] = exhumation
+    return model_score, samples
