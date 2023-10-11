@@ -84,7 +84,7 @@ for i in range(n_draws):
         continue
     
     model_score, samples = score(samples, new_exhumation)
-
+    print(f"model score: {model_score}")
     #store per run
     scores.append([i, model_score])
     exhumation.append(new_exhumation['exhumation'])
