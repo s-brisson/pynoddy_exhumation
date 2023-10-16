@@ -7,6 +7,7 @@ import pynoddy.output
 import pandas as pd
 import numpy as np
 import copy 
+import pickle
 from exh_functions import *
 from exh_processing import * 
 from default_configs import *
@@ -21,9 +22,11 @@ label = generate_unique_label()
 
 model_exhumation_folder = f"{output_folder}/{model_name}/model_exhumation/{args.folder}/"
 model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
+model_rawdata_folder = f"{output_folder}/{model_name}/model_rawdata/{args.folder}/"
 
 makedirs(model_exhumation_folder,exist_ok=True)
 makedirs(model_params_folder,exist_ok=True)
+makedirs(model_rawdata_folder,exist_ok=True)
 
 print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
@@ -74,8 +77,10 @@ for i in range(len(all_params)):
             hist_copy.events[fault].properties[prop] = all_params[i][p+f*2]
             
     model_coords,_,_ = exhumationComplex(i,hist_copy, lith, res, interval, upperlim, label) 
-    exh_block,_ = exhumation_grid_single(model_coords, out_hd, res, zdim)
+    exh_block,_,raw_exh_block = exhumation_grid_single(model_coords, out_hd, res, zdim)
 
+    pickle.dump(raw_exh_block, f"{model_rawdata_folder}/raw_exh_block_{label}_row{i}.pkl", "wb")
+    pickle.dump(model_coords, f"{model_rawdata_folder}/raw_coords_{label}_row{i}.pkl", "wb")
     np.save(f"{model_exhumation_folder}/exh_block_{label}_row{i}.npy", exh_block)
     np.save(f"{model_params_folder}/params_{label}_row{i}.npy", all_params[i])
 
