@@ -84,7 +84,8 @@ def exhumation_grid_single(array, output, res, zdim): #code to convert bullshit 
     zz = np.round((z_col) / (unit_z2 - unit_z)) 
     zzz = next((value for value in zz if value != 0), None)
     zz = zz - zzz
-    exh = np.round((e_col) / (unit_z2 - unit_z)) 
+    raw_exh = (e_col) / (unit_z2 - unit_z)
+    exh = np.round(raw_exh) 
     
     voxel_coords = []
     for j in range(len(xx)):
@@ -96,12 +97,13 @@ def exhumation_grid_single(array, output, res, zdim): #code to convert bullshit 
     print(xdim,ydim,zdim)
     
     E = np.zeros((xdim+1, ydim+1, zdim+1))
+    E_raw = np.zeros((xdim+1, ydim+1, zdim+1))
     
     for i, point in enumerate(voxel_coords):
         x,y,z = point
         E[x][y][z] = exh[i] #fills in empty grid with exhumation values
-    
-    return E, voxel_coords
+        E_raw[x][y][z] = raw_exh[i]
+    return E, voxel_coords, E_raw
 
 def calc_entropy(block_array, output, n):
     
