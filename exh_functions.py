@@ -164,7 +164,7 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
                 event.properties['Z'] = new_z
                 print(f"[{time_string()}] Processing indicator at z = {new_z} ...")
     
-                points,_,N1 = ExtractCoords(hist_copy, lith, res, unique_label) #make sure that the history is at least cube size 100.
+                points,_,N1,_ = ExtractCoords(hist_copy, lith, res, unique_label) #make sure that the history is at least cube size 100.
                 
                 try:
                     x = points[...,0]
