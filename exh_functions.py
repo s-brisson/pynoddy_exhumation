@@ -33,7 +33,7 @@ def parser():
     parser = argparse.ArgumentParser(description="stochastic simulation of exhumation from a kinematic modeling")
     parser.add_argument("ndraws", help="Number of simulations to be run",type=int)
     parser.add_argument("interval", type=int, help="Indicator layer z-axis step size")
-    parser.add_argument("resolution", help="samples coord every res voxels",  choices=[8,16,32,64],type=int)
+    parser.add_argument("resolution", help="samples coord every res voxels",type=int)
     parser.add_argument("--folder", help="folder where to store the output files", type=str, required=False, default="test")
     return parser
 
