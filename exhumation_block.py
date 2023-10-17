@@ -79,8 +79,10 @@ for i in range(len(all_params)):
     model_coords,_,_ = exhumationComplex(i,hist_copy, lith, res, interval, upperlim, label) 
     exh_block,_,raw_exh_block = exhumation_grid_single(model_coords, out_hd, res, zdim)
 
-    pickle.dump(raw_exh_block, f"{model_rawdata_folder}/raw_exh_block_{label}_row{i}.pkl", "wb")
-    pickle.dump(model_coords, f"{model_rawdata_folder}/raw_coords_{label}_row{i}.pkl", "wb")
+    with open(f'{model_rawdata_folder}/rawblock_{label}_row{i}.pkl', 'wb') as f:
+        pickle.dump(raw_exh_block, f)
+    with open(f'{model_rawdata_folder}/rawcoords_{label}_row{i}.pkl', 'wb') as k:
+        pickle.dump(raw_coords, k)
     np.save(f"{model_exhumation_folder}/exh_block_{label}_row{i}.npy", exh_block)
     np.save(f"{model_params_folder}/params_{label}_row{i}.npy", all_params[i])
 
