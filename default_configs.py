@@ -19,6 +19,7 @@ model_name = "bregenz"
 maps = [[21,-1000,-11000],
        [22,2000,-9500],
        [23,-2000,-5000]]
+synthetic_data = [[21, 3400],[22, 3300],[24,5400]]
 
 #INPUTS FOR MCMC (without indicator layer)
 event = [21,22,24] #events to modify
