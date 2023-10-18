@@ -82,7 +82,7 @@ for i in range(len(all_params)):
     with open(f'{model_rawdata_folder}/rawblock_{label}_row{i}.pkl', 'wb') as f:
         pickle.dump(raw_exh_block, f)
     with open(f'{model_rawdata_folder}/rawcoords_{label}_row{i}.pkl', 'wb') as k:
-        pickle.dump(raw_coords, k)
+        pickle.dump(model_coords, k)
     np.save(f"{model_exhumation_folder}/exh_block_{label}_row{i}.npy", exh_block)
     np.save(f"{model_params_folder}/params_{label}_row{i}.npy", all_params[i])
 
