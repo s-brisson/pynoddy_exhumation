@@ -15,7 +15,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
 
     timestamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())
     this_job_dir = f"/home/ho640525/projects/Exhumation/ClusterSubmission/Logs/{timestamp}/"
-    JobSubFile_Groupable = f"/home/ho640525/projects/Exhumation/ClusterSubmission/Sub/Exh_Groupable_{timestamp}_NJOBS{n_jobs}.sh"
+    JobSubFile_Groupable = f"/home/ho640525/projects/Exhumation/ClusterSubmission/Sub/Exh_Groupable_{timestamp}_NJOBS{ndraws}.sh"
     JobSubFile_Modulus = f"/home/ho640525/projects/Exhumation/ClusterSubmission/Sub/Exh_Modulus_{timestamp}_NJOBS1.sh"
 
     makedirs(this_job_dir,exist_ok=True)
@@ -35,7 +35,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
         sout.write("### Declare the merged STDOUT/STDERR file\n")
         sout.write(f"#SBATCH --output={this_job_dir}/MCMC_goupable_output_%A_%a.txt\n")
         sout.write(f"# {ndraws} jobs will run in this array at the same time\n")
-        sout.write(f"#SBATCH --array=1-{n_jobs}\n")
+        #sout.write(f"#SBATCH --array=1-{n_jobs}\n")
         sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
         sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
         sout.write(f"{executable} {interval} {resolution} {folder}\n")
