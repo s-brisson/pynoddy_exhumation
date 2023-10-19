@@ -1,5 +1,5 @@
-#Filename = outputs/hist_hd.his 
-#Date Saved = 17/10/2023 17:4:59
+#Filename = outputs/hist_initial.his 
+#Date Saved = 19/10/2023 16:16:33
 FileType = 111
 Version = 7.03
 
@@ -3955,11 +3955,11 @@ Event #21	= FAULT
 	Movement = Hanging Wall
 	X = 29500.000000
 	Y = 9999.000000
-	Z = -900.000000
+	Z = -860.618627
 	Dip Direction = 73.000000
 	Dip = 3.000000
 	Pitch = 90.000000
-	Slip = -12500.000000
+	Slip = -12981.202322
 	Rotation = 30.000000
 	Amplitude = 4528.000000
 	Radius = 1000.000000
@@ -4239,11 +4239,11 @@ Event #22	= FAULT
 	Movement = Hanging Wall
 	X = 27300.000000
 	Y = 0.000000
-	Z = 1500.000000
+	Z = 1449.649138
 	Dip Direction = 90.000000
 	Dip = 0.000000
 	Pitch = 90.000000
-	Slip = -10000.000000
+	Slip = -10209.185550
 	Rotation = 30.000000
 	Amplitude = 6792.000000
 	Radius = 1000.000000
@@ -4625,11 +4625,11 @@ Event #24	= FAULT
 	Movement = Hanging Wall
 	X = 33500.000000
 	Y = 0.000000
-	Z = -1500.000000
+	Z = -1171.205605
 	Dip Direction = 90.000000
 	Dip = 0.000000
 	Pitch = 90.000000
-	Slip = -3500.000000
+	Slip = -3163.621302
 	Rotation = 30.000000
 	Amplitude = 5000.000000
 	Radius = 1000.000000
@@ -6142,8 +6142,10 @@ Event #29	= DYKE
 	Length X	= 25000.00
 	Length Y	= 22000.00
 	Length Z	= 21800.00
-	Geology Cube Size	= 100.00
-	Geophysics Cube Size	= 100.00
+	Geology Cube Size	= 100.00
+
+	Geophysics Cube Size	= 100.00
+
 
 #GeologyOptions
 	Scale	=  10.00
