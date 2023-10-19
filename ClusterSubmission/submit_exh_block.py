@@ -8,7 +8,7 @@ args = created_parser.parse_args()
 
 ndraws,interval,resolution,folder = args.ndraws,args.interval, args.resolution, args.folder
 
-N_SIMULATIONS_PER_JOB = 10
+N_SIMULATIONS_PER_JOB = 1
 
 def generateSubFile(ndraws,interval,resolution,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
@@ -57,7 +57,7 @@ def generateSubFile(ndraws,interval,resolution,folder):
             sout.write(f"#SBATCH --array=1-1\n")
             sout.write("# each job will see a different ${SLURM_ARRAY_TASK_ID}\n")
             sout.write("echo \'now processing task id:: \' ${SLURM_ARRAY_TASK_ID}\n")
-            sout.write(f"{executable} {interval} {resolution} {folder}\n")
+            sout.write(f"{executable} {n_job_modulus} {folder}\n")
     
     if n_jobs!=0 and n_job_modulus!=0:
         return JobSubFile_Groupable, JobSubFile_Modulus
