@@ -9,6 +9,7 @@ from default_configs import *
 from exh_processing import *
 from exh_functions import *
 import os
+from os import makedirs
 
 #SET UP ARGUMENT PARSERS AND OUTPUT FOLDERS
 created_parser = parser_new()
