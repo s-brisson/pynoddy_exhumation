@@ -54,7 +54,7 @@ samples = samples.iloc[sample_num]
 
 print(f"[{time_string()}] Calculating current exhumation.")
 current_exhumation,_,_ = calc_new_position(hist, diff,
-                                        og_depths, lith_list, samples.copy())
+                                        og_depths, lith_list, samples.copy(), label)
 samples.reset_index(drop = True, inplace = True)
 samples['exhumation'] = current_exhumation['exhumation']
 
@@ -84,7 +84,7 @@ for i in range(n_draws):
         current_hist = copy.deepcopy(hist)
         proposed_params, proposed_params_df = disturb_property(current_hist, event, prop, std)
         try:
-            proposed_exhumation,_,new_hist = calc_new_position(current_hist, diff, og_depths, lith_list, samples.copy())
+            proposed_exhumation,_,new_hist = calc_new_position(current_hist, diff, og_depths, lith_list, samples.copy(), label)
         except IndexError:
             continue
         
