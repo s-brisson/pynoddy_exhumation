@@ -59,16 +59,7 @@ samples.reset_index(drop = True, inplace = True)
 samples['exhumation'] = current_exhumation['exhumation']
 
 #DEFINING LAST IMPORTANT PARAMS
-og_params = []
-for i in event:
-    event_data = [i]
-    for j, props in enumerate(prop):
-        propert = hist.events[i].properties[props]
-        event_data.append(propert)
-    og_params.append(event_data)
-    
-col = ['event_name'] + prop
-og_params_df = pd.DataFrame(og_params, columns = col)
+og_params = [[21, -860.6186270541134, -12981.20232166832],[22, 1449.6491377332402, -10209.185549843101],[24, -1171.2056049491198, -3163.6213015919775]]
 
 current_params = og_params
 
