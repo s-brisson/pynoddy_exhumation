@@ -29,8 +29,8 @@ makedirs(model_exhumation_folder,exist_ok=True)
 #LOAD THE MODEL STEP MISSING
 print(f"[{time_string()}] Running the base model")
 history_synth = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/hist_initial.his"
-output = f'{output_folder}/noddy/noddy_out_{label}'
-pynoddy.compute_model(history_samples, output_name, 
+output_name = f'{output_folder}/noddy/noddy_out_{label}'
+pynoddy.compute_model(history_synth, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
 hist = pynoddy.history.NoddyHistory(history_synth)
