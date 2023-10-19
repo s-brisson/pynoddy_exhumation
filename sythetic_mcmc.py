@@ -37,9 +37,9 @@ hist = pynoddy.history.NoddyHistory(history_synth)
 
 #EXTRACT CURRENT EXHUMATION
 og_depths = []
-for event_name, event in hist.events.items():
-    if isinstance(event, pynoddy.events.Plug):
-        z = event.properties['Z']
+for event_name, evento in hist.events.items():
+    if isinstance(evento, pynoddy.events.Plug):
+        z = evento.properties['Z']
         
         og_depths.append(z)
 
