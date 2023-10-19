@@ -380,7 +380,24 @@ def simple_likelihood(samples_df):
             else:
                 rf = np.exp(-50*proximity / 3200)
             likelihood *= (rf) 
-    
+
     return likelihood, model_score, samples_df
-            
-            
+
+def cont_likelihood(mu, sigma, x):
+    #mu is the model prediciton, sigma is the errorof the data and x is the observed data
+    # Calculate the likelihood using the Gaussian PDF
+    pdf = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(-0.5 * ((x - mu) / sigma) ** 2)
+    return pdf
+
+def synthetic_likelihood(exhumation_df, synthetic_data, sigma=800):
+    #The bigger the sigma, the bigger the likelihood
+    likelihood = 1.0
+    
+    for i in range(len(synthetic_data)):
+        modeled_value = exhumation_df.iloc[i]['exhumation']
+        data = synthetic_data[i][1]
+        
+        like_value = cont_likelihood(modeled_value, sigma, data)
+        likelihood *= like_value
+    
+    return likelihood
