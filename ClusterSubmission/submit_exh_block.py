@@ -25,8 +25,8 @@ def generateSubFile(ndraws,interval,resolution,folder):
         with open(JobSubFile_Groupable, 'w') as sout:
             sout.write("#!/bin/bash -l\n")
             sout.write("#SBATCH --job-name=array_job_Groupable\n")
-            sout.write("#SBATCH --nodes=1")
-            sout.write("#SBATCH --ntasks=32")
+            sout.write("#SBATCH --nodes=1\n")
+            sout.write("#SBATCH --ntasks=32\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
             sout.write("#SBATCH --time=0-12:00:00\n")
@@ -44,8 +44,8 @@ def generateSubFile(ndraws,interval,resolution,folder):
         with open(JobSubFile_Modulus, 'w') as sout:
             sout.write("#!/bin/bash -l\n")
             sout.write("#SBATCH --job-name=array_job_Modulus\n")
-            sout.write("#SBATCH --nodes=1")
-            sout.write("#SBATCH --ntasks=32")
+            sout.write("#SBATCH --nodes=1\n")
+            sout.write("#SBATCH --ntasks=32\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
             sout.write("#SBATCH --time=0-12:00:00\n")
