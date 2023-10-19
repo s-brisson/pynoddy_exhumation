@@ -5,6 +5,8 @@ import pynoddy.history
 import pynoddy.output
 import pandas as pd
 import numpy as np
+from default_configs import *
+from exh_processing import *
 from exh_functions import *
 import os
 
@@ -12,7 +14,7 @@ import os
 created_parser = parser_new()
 args = created_parser.parse_args()
 n_draws = args.ndraws
-model_name = 'bregenz'
+
 label = generate_unique_label()
 current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
 model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
