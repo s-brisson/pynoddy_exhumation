@@ -34,6 +34,7 @@ pynoddy.compute_model(history_synth, output_name,
                       noddy_path = noddy_exe,
                       verbose=True)
 hist = pynoddy.history.NoddyHistory(history_synth)
+print(f"[{time_string()}] Just checking something: {hist.events[21].properties['Z']}")
 
 #EXTRACT CURRENT EXHUMATION
 og_depths = []
