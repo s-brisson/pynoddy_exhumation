@@ -84,9 +84,12 @@ for i in range(n_draws):
         proposed_prior = prior_dist(og_params, proposed_params, std)
         current_likelihood = synthetic_likelihood(current_exhumation, synthetic_data, sigma)
         proposed_likelihood = synthetic_likelihood(proposed_exhumation, synthetic_data, sigma)
+        print(f"Current prior {current_prior}, Proposed prior {proposed_prior}")
+        print(f"Current like {current_likelihood}, Proposed like {proposed_likelihood}")
         
         #acceptance ratio and thresholds
         acceptance_ratio = (proposed_prior * proposed_likelihood) / (current_prior * current_likelihood)
+        print(f"acceptance ratio {acceptance_ratio}")
         threshold = np.random.rand(1)
         
         if acceptance_ratio > threshold:
