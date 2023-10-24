@@ -77,7 +77,7 @@ for i in range(len(all_params)):
             hist_copy.events[fault].properties[prop] = all_params[i][p+f*2]
             
     model_coords,_,_ = exhumationComplex(i,hist_copy, lith, res, interval, upperlim, label) 
-    exh_block,_,_ = exhumation_grid_single(model_coords, out_hd, res, zdim)
+    exh_block,_,raw_exh_block = exhumation_grid_single(model_coords, out_hd, res, zdim)
 
     with open(f'{model_rawdata_folder}/rawblock_{label}_row{i}.pkl', 'wb') as f:
         pickle.dump(raw_exh_block, f)
