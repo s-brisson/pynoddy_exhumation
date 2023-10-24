@@ -26,7 +26,7 @@ def generateSubFile(ndraws,folder):
     if n_jobs != 0:
         with open(JobSubFile_Groupable, 'w') as sout:
             sout.write("#!/bin/bash -l\n")
-            sout.write("#SBATCH --job-name=array_job_Groupable\n)
+            sout.write("#SBATCH --job-name=array_job_Groupable\n")
             sout.write("#SBATCH --nodes=1\n")
             sout.write("#SBATCH --ntasks=32\n")
             sout.write("# cap on execution time\n")
