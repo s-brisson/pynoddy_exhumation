@@ -171,6 +171,7 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
                     y = points[...,1]
                     z = points[...,2]
                 except IndexError:
+                    print("Point assignment failed")
                     continue
                 
                 #correct for weird noddy coordinates
