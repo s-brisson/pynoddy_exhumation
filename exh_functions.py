@@ -65,8 +65,8 @@ def time_string():
 def ExtractCoords(hist_moment, lith, res, unique_label):
     
     # Compute noddy model for history file
-    temp_hist = f'{output_folder}/history/temp_hist_{unique_label}.his'
-    temp_out = f'{output_folder}/noddy/temp_out_{unique_label}'
+    temp_hist = f'{output_folder}/history/temp_hist.his'
+    temp_out = f'{output_folder}/noddy/temp_out'
     hist_moment.write_history(temp_hist)
     pynoddy.compute_model(temp_hist, temp_out, 
                           noddy_path = noddy_exe)
