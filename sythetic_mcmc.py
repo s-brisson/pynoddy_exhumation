@@ -111,6 +111,7 @@ for i in range(n_draws):
             
         else:
             #store stuff for each run
+            rejected += 1
             np.save(f"{model_exhumation_folder}/rejected_exh_{label}_draw{rejected}.npy", proposed_exhumation['exhumation'])
             np.save(f"{model_params_folder}/rejected_params_{label}_draw{rejected}.npy", proposed_params)
             rej_hist = f'{model_histories_folder}/rej_hist_{label}_draw{rejected}.his'
