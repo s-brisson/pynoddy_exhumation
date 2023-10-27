@@ -195,7 +195,11 @@ for i in range(n_draws):
             rejected_params = pd.concat([rejected_params, proposed_params_df], ignore_index=True)
             rej_hist = f'{model_histories_folder}/rej_hist_{label}_draw{total_runs}.his'
             os.rename(new_hist, rej_hist)
-
+          
+        if i%5 == 0:
+            accepted_params.to_csv(f"{model_params_folder}/acc_params_{label}.csv", index = False)
+            rejected_params.to_csv(f"{model_params_folder}/rej_params_{label}.csv", index = False)
+          
         total_runs += 1
         print(f"Total runs: {total_runs}")
 
