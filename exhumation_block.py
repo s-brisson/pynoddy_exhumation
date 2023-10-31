@@ -70,10 +70,11 @@ all_params = np.load(all_params,allow_pickle = True)
 print(f"[{time_string()}] Starting exhumation calculation")
 hist_copy = copy.deepcopy(hist)
 
-for i in range(len(all_params)):
-    print(f"Processing #{i} out of {len(all_params)}")
+for i in range(1):
+    #print(f"Processing #{i} out of {len(all_params)}")
     for f, fault in enumerate(fault_list):
         for p, prop in enumerate(prop_list):
+            print(f"Processing param {all_params[p+f*2]}")
             #hist_copy.events[fault].properties[prop] = all_params[i][p+f*2]
             hist_copy.events[fault].properties[prop] = all_params[p+f*2]
             
