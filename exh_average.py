@@ -80,7 +80,7 @@ hist_copy = copy.deepcopy(hist)
 
 for i in range(len(params)):
     print(f"[{time_string()}] Calculating param row {i}.")
-    for f, fault in enumerate(event)
+    for f, fault in enumerate(event):
         for p, props in enumerate(prop):
             hist_copy.events[fault].properties[props] = params[i][f][p+1]
 
