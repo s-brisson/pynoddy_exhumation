@@ -1,6 +1,6 @@
 #### INPUTS
 history = 'data/input_files/bregenz_ver5.his'
-all_params = 'data/input_files/inputparams_300.npy'
+all_params = 'data/input_files/inputparams_400.npy'
 history_samples = 'data/input_files/bregenz_samples.his'
 samples = 'data/input_files/bregenz_data.csv'
 noddy_exe = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/noddy"
