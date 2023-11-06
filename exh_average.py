@@ -40,7 +40,7 @@ out_hd = pynoddy.output.NoddyOutput(out_hd)
 samples = pd.read_csv(samples,delimiter = ',')
 
 #DEFINE IMPORTANT VALUES
-g_depths = []
+og_depths = []
 for event_name, evento in hist.events.items():
     if isinstance(evento, pynoddy.events.Plug):
         z = evento.properties['Z']  
