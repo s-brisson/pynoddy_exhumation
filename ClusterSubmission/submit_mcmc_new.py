@@ -31,7 +31,7 @@ Now if we want to run 54 simulations we can do
 1 JOB of 4 simulations (modulus JOB)
 """
 
-N_SIMULATIONS_PER_JOB = 1000
+N_SIMULATIONS_PER_JOB = 1
 
 def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
@@ -50,11 +50,13 @@ def generateSubFile(ndraws,folder):
         with open(JobSubFile_Groupable, 'w') as sout:
             sout.write("#!/bin/bash -l\n")
             sout.write("#SBATCH --job-name=array_job_Groupable\n")
+            sout.write("#SBATCH --nodes=1\n")
+            sout.write("#SBATCH --ntasks=4\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=4-24:00:00\n")
+            sout.write("#SBATCH --time=24:00:00\n")
             sout.write("# this is a hard limit\n")
-            sout.write("#SBATCH --mem-per-cpu=4000MB\n")
+            sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
             sout.write(f"#SBATCH --output={this_job_dir}/MCMC_goupable_output_%A_%a.txt\n")
             sout.write(f"# {ndraws} jobs will run in this array at the same time\n")
@@ -67,11 +69,13 @@ def generateSubFile(ndraws,folder):
         with open(JobSubFile_Modulus, 'w') as sout:
             sout.write("#!/bin/bash -l\n")
             sout.write("#SBATCH --job-name=array_job_Modulus\n")
+            sout.write("#SBATCH --nodes=1\n")
+            sout.write("#SBATCH --ntasks=4\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=4-24:00:00\n")
+            sout.write("#SBATCH --time=24:00:00\n")
             sout.write("# this is a hard limit\n")
-            sout.write("#SBATCH --mem-per-cpu=4000MB\n")
+            sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
             sout.write(f"#SBATCH --output={this_job_dir}/MCMC_modulus_output_%A_%a.txt\n")
             sout.write(f"# {ndraws} jobs will run in this array at the same time\n")
