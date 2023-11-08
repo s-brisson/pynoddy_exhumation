@@ -30,6 +30,7 @@ makedirs(model_rawdata_folder,exist_ok=True)
 
 print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
+print(f"[{time_string()}] {'Input file':<40} {all_params}")
 print()
 
 #LOAD NODDY MODEL
