@@ -8,7 +8,7 @@ import numpy as np
 import copy
 from exh_functions import*
 
-created_parser = parser()
+created_parser = parser_new()
 args = created_parser.parse_args()
 n_draws = args.ndraws
 label = generate_unique_label()
