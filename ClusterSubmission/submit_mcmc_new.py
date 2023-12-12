@@ -21,17 +21,7 @@ THE SUBMISSION LOGIC
 TO BE CHECKED AND TESTED
 """
 
-"""
-1 simulation with z-step 100m and Resolution 16 took ~30min
-For a target job time of 5h we can put 
-10 simulations with z-step 100m and Resolution 16
-Now if we want to run 54 simulations we can do
-
-5 JOBS of 10 simulations each (JOBs groupable by 10)
-1 JOB of 4 simulations (modulus JOB)
-"""
-
-N_SIMULATIONS_PER_JOB = 1
+N_SIMULATIONS_PER_JOB = 100
 
 def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
@@ -42,8 +32,6 @@ def generateSubFile(ndraws,folder):
     JobSubFile_Modulus = f"/home/ho640525/projects/Exhumation/ClusterSubmission/Sub/MCMCnew_Modulus_{timestamp}_NJOBS1.sh"
 
     makedirs(this_job_dir,exist_ok=True)    
-
-
     
     ## JOB FILE FOR JOBS GROUPABLE BY 10
     if n_jobs != 0:
@@ -54,7 +42,7 @@ def generateSubFile(ndraws,folder):
             sout.write("#SBATCH --ntasks=4\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=24:00:00\n")
+            sout.write("#SBATCH --time=5-00:00:00\n")
             sout.write("# this is a hard limit\n")
             sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
@@ -73,7 +61,7 @@ def generateSubFile(ndraws,folder):
             sout.write("#SBATCH --ntasks=4\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=24:00:00\n")
+            sout.write("#SBATCH --time=5-00:00:00\n")
             sout.write("# this is a hard limit\n")
             sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
