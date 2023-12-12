@@ -27,7 +27,7 @@ makedirs(model_samples_folder,exist_ok=True)
 makedirs(model_exhumation_folder,exist_ok=True)
 
 
-print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
+print(f"[{time_string()}] {'Simulating based on file':<40} {history_samples}")
 print(f"[{time_string()}] {'Number of simulations':<40} {args.ndraws}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
 current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
@@ -35,11 +35,11 @@ current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/in
 ### RUNNING THE INITIAL MODEL
 print(f"[{time_string()}] Running the base model")
 output_name = f'{output_folder}/noddy/noddy_out_{label}'
-pynoddy.compute_model(history, output_name, 
+pynoddy.compute_model(history_samples, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
 
-hist = pynoddy.history.NoddyHistory(history)
+hist = pynoddy.history.NoddyHistory(history_samples)
 hist.change_cube_size(cubesize)
 hist_hd = f'{output_folder}/history/hist_hd_{label}.his'
 out_hd = f'{output_folder}/noddy/out_hd_{label}'
