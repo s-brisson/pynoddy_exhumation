@@ -26,5 +26,5 @@ sigma = 800
 event = [13,14,15,16] #events to modify
 prop = ['Z','Slip'] #properties to modify
 std = [300,800] #
-lith_list = [11,12,13,14,15] #lith IDs for the samples being analyzed.
-sample_num = [0,1,2,3,4] #sample indices
+lith_list = [12,13,14,15] #lith IDs for the samples being analyzed.
+sample_num = [1,2,3,4] #sample indices
