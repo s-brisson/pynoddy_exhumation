@@ -93,19 +93,21 @@ exhumations = []
 ### SIMULATION
 print(f"[{time_string()}] Starting simulation")
 for i in range(n_draws):
+    print(f"[{time_string()}] Run {i}")
     hist_copy = copy.deepcopy(hist)
 
     ### Disturb the model
     new_params, new_params_df = disturb_property(hist_copy, event, prop, std)
-
+    print(new_params_df)
     ### Calculate the exhumation with the new parameters
     try:
         new_exhumation,_,_ = calc_new_position(hist_copy, diff, og_depths, lith_list, samples.copy(), label)
     except IndexError:
+        print("IndexError")
         continue
-
+    
     new_exhumation.reset_index(drop = True, inplace = True)
-
+    
     ### Score the model based on the new exhumation values
     _, model_score, samples_df = likelihood_and_score(new_exhumation)
     samples = samples_df # redefine samples so that the respected count is preserved
