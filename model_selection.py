@@ -118,8 +118,7 @@ for i in range(n_draws):
     params = pd.concat([params, new_params_df], ignore_index=True)
     score.append([model_score, i])
 
-    np.save(f"{model_exhumation_folder}/exhumation_{label}_{i}.npy", new_exhumation['exhumation']) # Saves each exhumation per run
-
+np.save(f"{model_exhumation_folder}/exhumation_{label}.npy", exhumations) 
 samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
 scores = pd.DataFrame(score, columns = ['score', 'iteration']) # Tells me how many of the samples were respected
 params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False) # Saves all of the random parameters
