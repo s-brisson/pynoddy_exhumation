@@ -252,10 +252,10 @@ def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
         z = (t*1000) / 3681.39
         samples_noddy_pos.append(z)
     
-    if len(lith_list) > 1:
-        proposed_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
-    else:
-        proposed_exhumation = samples_noddy_pos - diff - og_depths
+    #if len(lith_list) > 1:
+    proposed_exhumation = [x - y - z for x,y,z in zip(samples_noddy_pos, diff, og_depths)]
+    #else:
+    #    proposed_exhumation = samples_noddy_pos - diff - og_depths
     samples['exhumation'] = proposed_exhumation
     return samples, samples_noddy_pos, new_hist 
 
