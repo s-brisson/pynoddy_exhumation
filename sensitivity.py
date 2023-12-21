@@ -85,7 +85,7 @@ for param in prop:
         #calculate the exhumation
         exh,_,_ = calc_new_position(hist_copy,diff, og_depths, lith, samples, label)
         p.append(new_param)
-        e.append(exh)
+        e.append(exh['exhumation'])
         
         change_unit += 1
         
