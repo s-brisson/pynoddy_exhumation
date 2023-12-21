@@ -83,7 +83,7 @@ for param in prop:
         hist_copy.events[21].properties[param] = new_param
         
         #calculate the exhumation
-        exh,_,_ = calc_new_position(hist_copy,diff, og_depths, lith, samples)
+        exh,_,_ = calc_new_position(hist_copy,diff, og_depths, lith, samples, label)
         p.append(new_param)
         e.append(exh)
         
