@@ -32,7 +32,7 @@ pynoddy.compute_model(history, output_name,
                       noddy_path = noddy_exe,
                       verbose=True)
 
-hist = pynoddy.history.NoddyHistory(history)
+hist = pynoddy.history.NoddyHistory(history_samples)
 hist.change_cube_size(cubesize)
 hist_hd = f'{output_folder}/history/hist_hd_{label}.his'
 out_hd = f'{output_folder}/noddy/out_hd_{label}'
