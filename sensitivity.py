@@ -72,8 +72,9 @@ samples = samples.iloc[sample_num]
 for param in prop:
     change_unit = 0
     hist_copy = copy.deepcopy(hist)
-    starting_param = hist_copy.events[21].properties[param] - (26*1)
-
+    starting_param = hist_copy.events[21].properties[param] - (26*200)
+    #starting_param = 0   #for angle values
+    
     e = []
     p = []
     exhumation = pd.DataFrame(columns = ['Parameters', 'Exhumation'])
@@ -84,11 +85,10 @@ for param in prop:
         
         #calculate the exhumation
         exh,_,_ = calc_new_position(hist_copy,diff, og_depths, lith, samples, label)
-        print(exh['exhumation'])
         p.append(new_param)
         e.append(exh['exhumation'])
         
-        change_unit += 1
+        change_unit += 200
         
     exhumation['Parameters'] = p
     exhumation['Exhumation'] = e
