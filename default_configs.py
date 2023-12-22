@@ -23,8 +23,8 @@ synthetic_data = [[21, 3400],[22, 3300],[24,5400]]
 sigma = 800
 
 #INPUTS FOR MCMC (without indicator layer)
-event = [21] #events to modify
-prop = ['Dip Direction', 'Dip', 'Pitch'] #properties to modify
+event = [22] #events to modify
+prop = ['X', 'Y', 'Z','Slip', 'Amplitude'] #properties to modify
 std = [300,800] #
-lith_list = [13] #lith IDs for the samples being analyzed.
-sample_num = [2] #sample indices
+lith_list = [15] #lith IDs for the samples being analyzed.
+sample_num = [4] #sample indices
