@@ -72,8 +72,8 @@ samples = samples.iloc[sample_num]
 for param in prop:
     change_unit = 0
     hist_copy = copy.deepcopy(hist)
-    starting_param = hist_copy.events[21].properties[param] - (26*200)
-    #starting_param = 0   #for angle values
+    #starting_param = hist_copy.events[21].properties[param] - (26*200)
+    starting_param = 0   #for angle values
     
     e = []
     p = []
@@ -88,7 +88,7 @@ for param in prop:
         p.append(new_param)
         e.append(exh['exhumation'])
         
-        change_unit += 200
+        change_unit += 2
         
     exhumation['Parameters'] = p
     exhumation['Exhumation'] = e
