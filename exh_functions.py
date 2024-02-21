@@ -104,6 +104,32 @@ def ExtractCoords(hist_moment, lith, res, unique_label):
 
     return points, num_list, N1, temp_hist
 
+def ExtractCoordsSimple(output, lith, res):
+    
+    # Compute noddy model for history file
+    sum_node = []
+    if isinstance(lith, list):
+        #litho_list = list(range(1, num_rock+1))  ##the lithoID in noddy begin at 2, lithoID could be a lis
+        for i in lith:
+            rockID = i*2  #because points = np.absolute(points/2), multiply 2 in advance
+            out = output.get_surface_grid(lithoID=[i], res=res)  #here can change the sampling number by changing res
+            listx = out[0][0][i]   #out[0]：get_surface_grid, only choose first direction；out[0][0]: x values in x-grid
+            listy = out[0][1][i]   #y values
+            listz = out[0][2][i]
+            xx = sum(listx, [])  #multi-rows to one row
+            yy = sum(listy, [])
+            zz = sum(listz, [])
+            for j in range(len(xx)):
+                sum_node.append([xx[j],yy[j],zz[j],rockID])
+        
+    #get_surface_grid function will get negative value, and twice the value, don't know the reason
+    points = np.array(sum_node)
+    points = np.absolute(points/2)
+    np.set_printoptions(precision=2) #two decimal places
+    np.set_printoptions(suppress=True) #don't use scientific notation
+
+    return points
+
 def disturb_percent(event, prop, percent = 30):
     """Disturb the property of an event by a given percentage, assuming a normal distribution"""
     ori_val = event.properties[prop]
