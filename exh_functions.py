@@ -270,6 +270,7 @@ def likelihood(samples_df):
     return likelihood
 
 #MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
+#this function only works for the Bregenz model (it's resolution dependent and something else)
 def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
     samples_noddy_pos = []
     for i in lith_list:
@@ -283,9 +284,22 @@ def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
     #else:
     #    proposed_exhumation = samples_noddy_pos - diff - og_depths
     samples['exhumation'] = proposed_exhumation
-    return samples, samples_noddy_pos, new_hist 
+    return samples, samples_noddy_pos, new_hist
 
-def disturb_property(PH_local, event_list, prop_list, std_list):
+#this function is more general, I made it for the TRANSALP models but maybe it also works for other models
+#calculate the initial exhumation
+def calc_exhumation(output, conversion_factor, samples_df, og_depths):
+    samples_noddy_pos = []
+    for i in samples_df['lith_id']:
+        p = ExtractCoordsSimple(output, lith = [i], res = 2)
+        t = p[...,2].max() * conversion_factor
+        samples_noddy_pos.append(t) #this is the coordinate of the sample at the current time
+    exhumation = [x + y - z for x,y,z in zip(samples_noddy_pos, samples_df['z'], og_depths)]
+    samples_df['exhumation'] = exhumation
+    
+    return samples_df
+
+def disturb_property(PH_local, event_list, prop_list, std_list, recompute, unique_label):
     data = []
     for i in event_list:
         event_data = [i]
@@ -293,12 +307,19 @@ def disturb_property(PH_local, event_list, prop_list, std_list):
             new_param = disturb_value(PH_local.events[i], prop_list[j], std_list[j])
             rounded_param = round(new_param, -2) #round it to the nearest hundred (cubesize dependent!)
             event_data.append(rounded_param)
-            
         data.append(event_data)
     col = ['event_name'] + prop_list
     df = pd.DataFrame(data, columns = col)
-    
-    return data, df
+
+    if recompute == True:
+        temp_hist = f'{output_folder}/history/temp_hist_{unique_label}.his'
+        temp_out = f'{output_folder}/noddy/temp_out_{unique_label}'
+        hist_moment.write_history(temp_hist)
+        pynoddy.compute_model(temp_hist, temp_out,noddy_path = noddy_exe)
+        N1 = pynoddy.output.NoddyOutput(temp_out)
+    else:
+        N1 = 'Did not recompute the model'
+    return data, df, N1
     
 def likelihood_and_score(samples_df):
     
