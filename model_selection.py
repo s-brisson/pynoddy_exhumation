@@ -27,10 +27,10 @@ makedirs(model_samples_folder,exist_ok=True)
 makedirs(model_exhumation_folder,exist_ok=True)
 
 
-print(f"[{time_string()}] {'Simulating based on file':<40} {history_samples}")
+print(f"[{time_string()}] {'Simulating based on file':<40} {history_transalp}")
 print(f"[{time_string()}] {'Number of simulations':<40} {args.ndraws}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
-current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
+#current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
 
 ### RUNNING THE INITIAL MODEL
 print(f"[{time_string()}] Running the base model")
@@ -38,8 +38,7 @@ output_name = f'{output_folder}/noddy/noddy_out_{label}'
 pynoddy.compute_model(history_samples, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
-
-hist = pynoddy.history.NoddyHistory(history_samples)
+hist = pynoddy.history.NoddyHistory(history_transalp)
 hist.change_cube_size(cubesize)
 hist_hd = f'{output_folder}/history/hist_hd_{label}.his'
 out_hd = f'{output_folder}/noddy/out_hd_{label}'
@@ -48,7 +47,7 @@ print(f"[{time_string()}] Running the HD model")
 pynoddy.compute_model(hist_hd, out_hd, noddy_path = noddy_exe)
 out_hd = pynoddy.output.NoddyOutput(out_hd)
 
-samples = pd.read_csv(samples, delimiter = ',')
+synth_samples = pd.read_csv(synth_samples, delimiter = ',')
 
 ### DEFINE IMPORTANT VALUES
 ### Extract the depth of the sample
@@ -57,21 +56,21 @@ for event_name, evento in hist.events.items():
     if isinstance(evento, pynoddy.events.Plug):
         z = evento.properties['Z']  
         og_depths.append(z)
-og_depths = [og_depths[i] for i in sample_num] #but only for the samples used
+#og_depths = [og_depths[i] for i in sample_num] #but only for the samples used
 
 ### Extract the altitude of the samples
-samples_z = []
-for i in range(len(samples)):
-    z = samples.iloc[i]['Z']
-    samples_z.append(z)
+#samples_z = []
+#for i in range(len(samples)):
+#    z = samples.iloc[i]['Z']
+#    samples_z.append(z)
 
 ### Initial exhumation
-if os.path.exists(current_exh_path):
-    print(f"[{time_string()}] Found existing data.")
-    samples = pd.read_csv(current_exh_path)
-    diff = np.load("/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/diff.npy")
-diff = [diff[i] for i in sample_num]
-samples = samples.iloc[sample_num]
+#if os.path.exists(current_exh_path):
+#    print(f"[{time_string()}] Found existing data.")
+#    samples = pd.read_csv(current_exh_path)
+#    diff = np.load("/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/diff.npy")
+#diff = [diff[i] for i in sample_num]
+#samples = samples.iloc[sample_num]
 
 ### Original parameters
 og_params = []
@@ -81,47 +80,49 @@ for i in event:
         propert = hist.events[i].properties[props]
         event_data.append(propert)
     og_params.append(event_data)
-    
 col = ['event_name'] + prop
 og_params_df = pd.DataFrame(og_params, columns = col)
 
 ### PREPARING OUTPUTS
-score = []
+scores = []
 params = pd.DataFrame(columns=['Event'] + prop + ['n_draw'])
 exhumations = []
 
 ### SIMULATION
 print(f"[{time_string()}] Starting simulation")
 for i in range(n_draws):
+  
     hist_copy = copy.deepcopy(hist)
 
     ### Disturb the model
-    new_params, new_params_df = disturb_property(hist_copy, event, prop, std)
+    _, new_params_df, output = disturb_property(hist_copy, event, prop, std, recompute = True, label)
+  
     ### Calculate the exhumation with the new parameters
     try:
-        new_exhumation,_,_ = calc_new_position(hist_copy, diff, og_depths, lith_list, samples.copy(), label)
+        new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths)
     except IndexError:
         print("IndexError")
         continue
-    
     new_exhumation.reset_index(drop = True, inplace = True)
     
     ### Score the model based on the new exhumation values
-    _, model_score, samples_df = likelihood_and_score(new_exhumation)
-    samples = samples_df # redefine samples so that the respected count is preserved
+    #_, model_score, samples_df = likelihood_and_score(new_exhumation)
+    #samples = samples_df # redefine samples so that the respected count is preserved
+    synth_samples_updated, model_score = score(new_exhumation, geo_gradient)
+    synth_samples = synth_samples_updated
     print(f"Model score: {model_score}")
 
     ### Save outputs
     print(f"[{time_string()}] Saving results of run {i+1}")
-
     exhumations.append(new_exhumation['exhumation'])
     params = pd.concat([params, new_params_df], ignore_index=True)
-    score.append([model_score, i])
+    scores.append([model_score, i])
 
 np.save(f"{model_exhumation_folder}/exhumation_{label}.npy", exhumations) 
-samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
-scores = pd.DataFrame(score, columns = ['score', 'iteration']) # Tells me how many of the samples were respected
+synth_samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
+scores_df = pd.DataFrame(scores, columns = ['score', 'iteration']) # Tells me how many of the samples were respected
 params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False) # Saves all of the random parameters
+scores_df.to_csv(f"{model_scores_folder}/scores_{label}.csv", index = False)
 
 print(f"[{time_string()}] Complete")
 clean(label)
