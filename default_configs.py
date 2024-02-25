@@ -1,3 +1,4 @@
+import numpy as np
 #### INPUTS
 history = 'data/input_files/bregenz_ver5.his'
 all_params = 'data/input_files/training_params_310.npy'

@@ -314,7 +314,7 @@ def disturb_property(PH_local, event_list, prop_list, std_list, recompute, uniqu
     if recompute == True:
         temp_hist = f'{output_folder}/history/temp_hist_{unique_label}.his'
         temp_out = f'{output_folder}/noddy/temp_out_{unique_label}'
-        hist_moment.write_history(temp_hist)
+        PH_local.write_history(temp_hist)
         pynoddy.compute_model(temp_hist, temp_out,noddy_path = noddy_exe)
         N1 = pynoddy.output.NoddyOutput(temp_out)
     else:
@@ -449,3 +449,50 @@ def synthetic_likelihood(exhumation_df, synthetic_data, sigma=800):
         likelihood *= like_value
     
     return likelihood
+
+def score_modelsel(samples_df, geo_gradient):
+    
+    model_score = 0
+    
+    ahe_min_exh, ahe_max_exh = (40/geo_gradient)*1000, (80/geo_gradient)*1000
+    aft_min_exh, aft_max_exh = (60/geo_gradient)*1000, (120/geo_gradient)*1000
+    zhe_min_exh, zhe_max_exh = (140/geo_gradient)*1000, (210/geo_gradient)*1000
+    zft_min_exh, zft_max_exh = (180/geo_gradient)*1000, (350/geo_gradient)*1000
+    
+    for i in range(len(samples_df)):
+        
+        if samples_df.iloc[i]['data_type'] in ['a']: #partially reset AHe,non-reset ZHe
+            if samples_df.iloc[i]['exhumation'] > ahe_min_exh and samples_df.iloc[i]['exhumation'] < ahe_max_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+            
+        elif samples_df.iloc[i]['data_type'] in ['b']: #reset AHe, AFT, non-reset ZHe, ZFT
+            if samples_df.iloc[i]['exhumation'] > aft_max_exh and samples_df.iloc[i]['exhumation'] < zhe_min_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+                
+        elif samples_df.iloc[i]['data_type'] in ['c']: #reset AHe, AFT, ZHe, partially reset ZFT
+            if samples_df.iloc[i]['exhumation'] > zhe_max_exh and samples_df.iloc[i]['exhumation'] < zft_max_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+            
+        elif samples_df.iloc[i]['data_type'] in ['d']: #reset AHe, AFT. partially reset ZHe, ZFT
+            if samples_df.iloc[i]['exhumation'] > zft_min_exh and samples_df.iloc[i]['exhumation'] < zhe_max_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+            
+        elif samples_df.iloc[i]['data_type'] in ['e']: #partially reset AHE, AFT. non-reset ZHe
+            if samples_df.iloc[i]['exhumation'] > aft_min_exh and samples_df.iloc[i]['exhumation'] < ahe_max_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+            
+        elif samples_df.iloc[i]['data_type'] in ['f']: #non-reset AFT
+            if samples_df.iloc[i]['exhumation'] < aft_min_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+            
+        elif samples_df.iloc[i]['data_type'] in ['g']: #all systems are reset
+            if samples_df.iloc[i]['exhumation'] > zft_max_exh:
+                model_score += 1
+                samples_df.loc[i, 'respected'] += 1
+    return samples_df, model_score

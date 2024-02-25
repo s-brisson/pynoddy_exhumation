@@ -95,7 +95,7 @@ for i in range(n_draws):
     hist_copy = copy.deepcopy(hist)
 
     ### Disturb the model
-    _, new_params_df, output = disturb_property(hist_copy, event, prop, std, recompute = True, label)
+    _, new_params_df, output = disturb_property(hist_copy, event, prop, std, True, label)
   
     ### Calculate the exhumation with the new parameters
     try:
@@ -108,7 +108,7 @@ for i in range(n_draws):
     ### Score the model based on the new exhumation values
     #_, model_score, samples_df = likelihood_and_score(new_exhumation)
     #samples = samples_df # redefine samples so that the respected count is preserved
-    synth_samples_updated, model_score = score(new_exhumation, geo_gradient)
+    synth_samples_updated, model_score = score_modelsel(new_exhumation, geo_gradient)
     synth_samples = synth_samples_updated
     print(f"Model score: {model_score}")
 
