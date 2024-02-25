@@ -21,7 +21,7 @@ THE SUBMISSION LOGIC
 TO BE CHECKED AND TESTED
 """
 
-N_SIMULATIONS_PER_JOB = 1
+N_SIMULATIONS_PER_JOB = 10
 
 def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
@@ -42,7 +42,7 @@ def generateSubFile(ndraws,folder):
             sout.write("#SBATCH --ntasks=2\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=5-00:00:00\n")
+            sout.write("#SBATCH --time=3-00:00:00\n")
             sout.write("# this is a hard limit\n")
             sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
@@ -61,7 +61,7 @@ def generateSubFile(ndraws,folder):
             sout.write("#SBATCH --ntasks=2\n")
             sout.write("# cap on execution time\n")
             sout.write("#d-hh:mm:ss\n")
-            sout.write("#SBATCH --time=5-00:00:00\n")
+            sout.write("#SBATCH --time=3-00:00:00\n")
             sout.write("# this is a hard limit\n")
             sout.write("#SBATCH --mem-per-cpu=2GB\n")
             sout.write("### Declare the merged STDOUT/STDERR file\n")
