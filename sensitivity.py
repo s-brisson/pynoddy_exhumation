@@ -95,7 +95,7 @@ for param in prop:
                                   noddy_path = noddy_exe)
             output = pynoddy.output.NoddyOutput(temp_out)
             
-            new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy())
+            new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths)
             new_exhumation.reset_index(drop = True, inplace = True)
             
             p.append(new_param)
