@@ -21,7 +21,7 @@ THE SUBMISSION LOGIC
 TO BE CHECKED AND TESTED
 """
 
-N_SIMULATIONS_PER_JOB = 10
+N_SIMULATIONS_PER_JOB = 400
 
 def generateSubFile(ndraws,folder):
     n_jobs, n_job_modulus = ndraws // N_SIMULATIONS_PER_JOB, ndraws % N_SIMULATIONS_PER_JOB
