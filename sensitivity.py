@@ -103,9 +103,9 @@ for param in prop:
             
             change_unit += 200
             
-        exhumation['Parameter'] = p
-        exhumation['Exhumation'] = e
-        exhumation.to_csv(f"{model_exhumation_folder}/exhumation_{param}_{ev}.csv", index = False)
+        exh['Parameter'] = p
+        exh['Exhumation'] = e
+        exh.to_csv(f"{model_exhumation_folder}/exhumation_{param}_{ev}.csv", index = False)
 
 print(f"[{time_string()}] Complete")
 clean(label)
