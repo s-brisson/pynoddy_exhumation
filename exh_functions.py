@@ -291,7 +291,7 @@ def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
 def calc_exhumation(output, conversion_factor, samples_df, og_depths):
     samples_noddy_pos = []
     for i in samples_df['lith_id']:
-        p = ExtractCoordsSimple(output, lith = [i], res = 1)
+        p = ExtractCoordsSimple(output, lith = [i], res = 2)
         t = p[...,2].max() * conversion_factor
         samples_noddy_pos.append(t) #this is the coordinate of the sample at the current time
     exhumation = [x + y - z for x,y,z in zip(samples_noddy_pos, samples_df['z'], og_depths)]
