@@ -29,7 +29,7 @@ sample_num = [4] #sample indices
 
 #TRANSALP INPUTS
 history_transalp = 'data/input_files/trans005.his'
-synth_samples = 'data/input_files/synth_samples.csv'
+synth_samples = 'data/input_files/synth_samples_model1.csv'
 avg_conv_factor = ((7500/3372.5) + (4602/2041.25)+ (9999/4437.5)) / 3
 geo_gradient = 25
 
