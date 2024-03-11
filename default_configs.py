@@ -24,15 +24,14 @@ synthetic_data = [[21, 3400],[22, 3300],[24,5400]]
 sigma = 800
 
 #INPUTS FOR MCMC (without indicator layer)
-prop = ['Slip'] #properties to modify
 sample_num = [4] #sample indices
 
 #TRANSALP INPUTS
-history_transalp = 'data/input_files/trans006.his'
-synth_samples = 'data/input_files/synth_samples_model2.csv'
+history_transalp = 'data/input_files/trans005.his'
+synth_samples = 'data/input_files/synth_samples_model1.csv'
 avg_conv_factor = ((7500/3372.5) + (4602/2041.25)+ (9999/4437.5)) / 3
 geo_gradient = 25
-
-event = np.arange(27,31) #events to modify
+prop = ['X', 'Z', 'Amplitude','Slip'] #properties to modify
+event = np.arange(22,30) #events to modify
 std = [2000,800,1000,600] #
 lith_list = np.arange(16,28) #lith IDs for the samples being analyzed.
