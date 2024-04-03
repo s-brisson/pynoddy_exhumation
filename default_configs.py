@@ -8,7 +8,7 @@ noddy_exe = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/
 save_each = False
 save_overall = True
 #### Modeling params
-cubesize = 200
+cubesize = 100
 lith = [11] #lith ID for the indicator layer.
 
 zdim = 65
@@ -27,7 +27,7 @@ sigma = 800
 sample_num = [4] #sample indices
 
 #TRANSALP INPUTS
-history_transalp = 'data/input_files/trans006.his'
+history_transalp = 'data/input_files/trans005.his'
 synth_samples = 'data/input_files/synth_samples_model2.csv'
 avg_conv_factor = ((7500/3372.5) + (4602/2041.25)+ (9999/4437.5)) / 3
 geo_gradient = 25
