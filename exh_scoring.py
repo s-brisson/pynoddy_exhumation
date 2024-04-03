@@ -17,19 +17,19 @@ interval = args.interval #calculates exhumation every interval m
 label = generate_unique_label()
 
 model_coords_folder = f"{output_folder}/{model_name}/model_coords/{args.folder}/"
-model_blocks_folder = f"{output_folder}/{model_name}/model_blocks/{args.folder}/"
-model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
-model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
-model_samples_folder = f"{output_folder}/{model_name}/model_samples/{args.folder}/"
+#model_blocks_folder = f"{output_folder}/{model_name}/model_blocks/{args.folder}/"
+#model_scores_folder = f"{output_folder}/{model_name}/model_scores/{args.folder}/"
+#model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
+#model_samples_folder = f"{output_folder}/{model_name}/model_samples/{args.folder}/"
 makedirs(model_coords_folder,exist_ok=True)
-makedirs(model_blocks_folder,exist_ok=True)
-makedirs(model_scores_folder,exist_ok=True)
-makedirs(model_params_folder,exist_ok=True)
-makedirs(model_samples_folder,exist_ok=True)
+#makedirs(model_blocks_folder,exist_ok=True)
+#makedirs(model_scores_folder,exist_ok=True)
+#makedirs(model_params_folder,exist_ok=True)
+#makedirs(model_samples_folder,exist_ok=True)
 
-print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
-print(f"[{time_string()}] {'Simulating based on observation':<40} {samples}")
-print(f"[{time_string()}] {'Number of simulations':<40} {args.ndraws}")
+print(f"[{time_string()}] {'Simulating based on file':<40} {history_transalp}")
+#print(f"[{time_string()}] {'Simulating based on observation':<40} {samples}")
+#print(f"[{time_string()}] {'Number of simulations':<40} {args.ndraws}")
 print(f"[{time_string()}] {'Indicator layer z-axis step size':<40} {interval}")
 print(f"[{time_string()}] {'Voxels resampling resolution':<40} {res}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
@@ -37,12 +37,12 @@ print()
 
 print(f"[{time_string()}] Running the base model")
 output_name = f'{output_folder}/noddy/noddy_out_{label}'
-pynoddy.compute_model(history, output_name, 
+pynoddy.compute_model(history_transalp, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
-
-hist = pynoddy.history.NoddyHistory(history)
+hist = pynoddy.history.NoddyHistory(history_transalp)
 out = pynoddy.output.NoddyOutput(output_name)
+
 upperlim = out.zmax - interval
 
 hist.change_cube_size(cubesize)
@@ -70,60 +70,61 @@ grid = (x,y,z)
 
 #for storage
 all_coords = []
-all_blocks = np.ndarray((n_draws, out_hd.nx, out_hd.ny, out_hd.nz), dtype = 'int')
-all_params = pd.DataFrame(columns = ['Event', 'New Slip', 'New Amplitude', 'New X', 'New Dip Direction','nDraw'])
-all_scores = []
-samples_df = pd.read_csv(samples, delimiter = ',')
-sections = np.empty((n_draws, out_hd.nx, out_hd.nz))
+#all_blocks = np.ndarray((n_draws, out_hd.nx, out_hd.ny, out_hd.nz), dtype = 'int')
+#all_params = pd.DataFrame(columns = ['Event', 'New Slip', 'New Amplitude', 'New X', 'New Dip Direction','nDraw'])
+#all_scores = []
+#samples_df = pd.read_csv(samples, delimiter = ',')
+#sections = np.empty((n_draws, out_hd.nx, out_hd.nz))
 
 
 #starting counter 
-samples_df['respected'] = 0
-std_list = [400,100,50,5]
+#samples_df['respected'] = 0
+#std_list = [400,100,50,5]
 
 #simulation starting
-for i in tqdm(range(n_draws), desc = 'Lets score em all'):
-    hist_copy = copy.deepcopy(hist) 
+#for i in tqdm(range(n_draws), desc = 'Lets score em all'):
+#    hist_copy = copy.deepcopy(hist) 
     
-    #add uncertainty and save model parameters
-    _,new_params = disturb(hist_copy,std_list,i)
+#    #add uncertainty and save model parameters
+#    _,new_params = disturb(hist_copy,std_list,i)
     
-    #calculate exhumation for the new model
-    coords, output,_ = exhumationComplex(i, hist_copy, lith, res, interval, upperlim, unique_label = label)
+#    #calculate exhumation for the new model
+
+coords, output,_ = exhumationComplex(i, hist_copy, lith, res, interval, upperlim, unique_label = label)
     
-    #interpolate exhumation for each sample position
-    #value to interpolate
-    E,_ = exhumation_grid_single(coords, out_hd, res, zdim)
+#    #interpolate exhumation for each sample position
+#    #value to interpolate
+#    E,_ = exhumation_grid_single(coords, out_hd, res, zdim)
     
-    #interpolate and score the model based on how many samples are respected.
-    model_score, samples_df = interp_and_score(E, samples_df, cubesize, res, zdim, min_depth, grid)
-    print(f"ndraw {i} model_score {model_score}")
-    all_scores.append([model_score,i])
+#    #interpolate and score the model based on how many samples are respected.
+#    model_score, samples_df = interp_and_score(E, samples_df, cubesize, res, zdim, min_depth, grid)
+#    print(f"ndraw {i} model_score {model_score}")
+#    all_scores.append([model_score,i])
     
     #store other important stuff
-    all_coords.append(coords)
-    all_blocks[i,:,:,:] = output.block
-    all_params = pd.concat([all_params, new_params], ignore_index = True)
-    sections[i,:,:] = output.block[:,10,:]
+all_coords.append(coords)
+#    all_blocks[i,:,:,:] = output.block
+#    all_params = pd.concat([all_params, new_params], ignore_index = True)
+#    sections[i,:,:] = output.block[:,10,:]
     
-    if save_each == True:
-        np.save('scoring/coords/coords_%04d.npy'%i, coords)
-        np.save('scoring/blocks/blocks_%04d.npy'%i, output.block)
-        new_params.to_csv('scoring/params/params_%04d.csv'%i, index = False)
+#    if save_each == True:
+#        np.save('scoring/coords/coords_%04d.npy'%i, coords)
+#        np.save('scoring/blocks/blocks_%04d.npy'%i, output.block)
+#        new_params.to_csv('scoring/params/params_%04d.csv'%i, index = False)
         
-all_scores = pd.DataFrame(all_scores,columns=["Score","nDraw"])
+#all_scores = pd.DataFrame(all_scores,columns=["Score","nDraw"])
 
 #calculate entropy so I don't have to save all the blocks.
-total_entropy, slice_entropy = calc_entropy(all_blocks, out_hd, n = 1)
-pickle.dump(total_entropy, open(f'{model_samples_folder}/entropy_{label}.pkl','wb'))
-np.save(f'{model_samples_folder}/slice_entropy_{label}.npy', slice_entropy)
+#total_entropy, slice_entropy = calc_entropy(all_blocks, out_hd, n = 1)
+#pickle.dump(total_entropy, open(f'{model_samples_folder}/entropy_{label}.pkl','wb'))
+#np.save(f'{model_samples_folder}/slice_entropy_{label}.npy', slice_entropy)
 
 if save_overall == True:
     pickle.dump(all_coords, open(f'{model_coords_folder}/coords_{label}.pkl', 'wb'))
-    pickle.dump(sections, open(f'{model_blocks_folder}/sections_{label}.pkl', 'wb'))
+#    pickle.dump(sections, open(f'{model_blocks_folder}/sections_{label}.pkl', 'wb'))
 #    pickle.dump(all_blocks, open(f'{model_blocks_folder}/blocks_{label}.pkl', 'wb'))
-    all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
-    all_scores.to_csv(f'{model_scores_folder}/scores_{label}.csv',  index = False)
-    samples_df.to_csv(f'{model_samples_folder}/samples_{label}.csv', index = False)
+#    all_params.to_csv(f'{model_params_folder}/params_{label}.csv', index = False)
+#    all_scores.to_csv(f'{model_scores_folder}/scores_{label}.csv',  index = False)
+#    samples_df.to_csv(f'{model_samples_folder}/samples_{label}.csv', index = False)
 print(f"[{time_string()}] Complete")
 clean(label)
