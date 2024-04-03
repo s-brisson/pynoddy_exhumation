@@ -11,7 +11,7 @@ save_overall = True
 cubesize = 100
 lith = [8] #lith ID for the indicator layer.
 
-zdim = 65
+#zdim = 65
 
 #### OUTPUTS
 output_folder = "data/outputs"
