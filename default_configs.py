@@ -9,7 +9,7 @@ save_each = False
 save_overall = True
 #### Modeling params
 cubesize = 100
-lith = [11] #lith ID for the indicator layer.
+lith = [8] #lith ID for the indicator layer.
 
 zdim = 65
 
