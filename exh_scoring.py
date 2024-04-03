@@ -67,6 +67,7 @@ x = np.arange(0, xdim+1)
 y = np.arange(0, ydim+1)
 z = np.arange(0, zdim+1)
 grid = (x,y,z)
+print(f"dims: {xdim,ydim,zdim}")
 
 #for storage
 all_coords = []
