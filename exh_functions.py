@@ -276,6 +276,7 @@ def calc_new_position(output, lith_list,samples, diff, og_depths):
     for i in lith_list:
         p = ExtractCoordsSimple(output, lith = [i], res = 1)
         t = p[...,2].min()
+        print(t)
         z = (t*1000) / 3681.39
         samples_noddy_pos.append(z)
     
