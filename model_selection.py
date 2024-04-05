@@ -27,7 +27,7 @@ makedirs(model_samples_folder,exist_ok=True)
 makedirs(model_exhumation_folder,exist_ok=True)
 
 
-print(f"[{time_string()}] {'Simulating based on file':<40} {history_transalp}")
+print(f"[{time_string()}] {'Simulating based on file':<40} {history_samples}")
 print(f"[{time_string()}] {'Number of simulations':<40} {args.ndraws}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
 #current_exh_path = "/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/bregenz_exh.csv"
@@ -38,7 +38,7 @@ output_name = f'{output_folder}/noddy/noddy_out_{label}'
 pynoddy.compute_model(history_samples, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
-hist = pynoddy.history.NoddyHistory(history_transalp)
+hist = pynoddy.history.NoddyHistory(history_samples)
 hist.change_cube_size(cubesize)
 hist_hd = f'{output_folder}/history/hist_hd_{label}.his'
 out_hd = f'{output_folder}/noddy/out_hd_{label}'
@@ -47,7 +47,7 @@ print(f"[{time_string()}] Running the HD model")
 pynoddy.compute_model(hist_hd, out_hd, noddy_path = noddy_exe)
 out_hd = pynoddy.output.NoddyOutput(out_hd)
 
-synth_samples = pd.read_csv(synth_samples, delimiter = ',')
+samples = pd.read_csv(samples, delimiter = ',')
 
 ### DEFINE IMPORTANT VALUES
 ### Extract the depth of the sample
@@ -56,21 +56,21 @@ for event_name, evento in hist.events.items():
     if isinstance(evento, pynoddy.events.Plug):
         z = evento.properties['Z']  
         og_depths.append(z)
-#og_depths = [og_depths[i] for i in sample_num] #but only for the samples used
+og_depths = [og_depths[i] for i in sample_num] #but only for the samples used
 
 ### Extract the altitude of the samples
-#samples_z = []
-#for i in range(len(samples)):
-#    z = samples.iloc[i]['Z']
-#    samples_z.append(z)
+samples_z = []
+for i in range(len(samples)):
+    z = samples.iloc[i]['Z']
+    samples_z.append(z)
 
 ### Initial exhumation
 #if os.path.exists(current_exh_path):
 #    print(f"[{time_string()}] Found existing data.")
 #    samples = pd.read_csv(current_exh_path)
-#    diff = np.load("/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/diff.npy")
-#diff = [diff[i] for i in sample_num]
-#samples = samples.iloc[sample_num]
+diff = np.load("/rwthfs/rz/cluster/home/ho640525/projects/Exhumation/data/input_files/diff.npy")
+diff = [diff[i] for i in sample_num]
+samples = samples.iloc[sample_num]
 
 ### Original parameters
 og_params = []
@@ -99,17 +99,18 @@ for i in range(n_draws):
   
     ### Calculate the exhumation with the new parameters
     try:
-        new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths)
+        #new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths) #FOR TRANSALP
+        new_exhumation,_,_ = calc_new_position(output, samples.copy(), diff, og_depths) #FOR SUBALIPINE MOLASSE
     except IndexError:
         print("IndexError")
         continue
     new_exhumation.reset_index(drop = True, inplace = True)
     
     ### Score the model based on the new exhumation values
-    #_, model_score, samples_df = likelihood_and_score(new_exhumation)
-    #samples = samples_df # redefine samples so that the respected count is preserved
-    synth_samples_updated, model_score = score_modelsel(new_exhumation, geo_gradient)
-    synth_samples = synth_samples_updated
+    _, model_score, samples_df = likelihood_and_score(new_exhumation) #SUBALPINE MOLASSE
+    samples = samples_df # redefine samples so that the respected count is preserved #SUBALPINE MOLASSE
+    #synth_samples_updated, model_score = score_modelsel(new_exhumation, geo_gradient) #TRANSALP
+    #synth_samples = synth_samples_updated #TRANSALP
     print(f"Model score: {model_score}")
 
     ### Save outputs
@@ -119,7 +120,7 @@ for i in range(n_draws):
     scores.append([model_score, i])
 
 np.save(f"{model_exhumation_folder}/exhumation_{label}.npy", exhumations) 
-synth_samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
+samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
 scores_df = pd.DataFrame(scores, columns = ['score', 'iteration']) # Tells me how many of the samples were respected
 params.to_csv(f"{model_params_folder}/params_{label}.csv", index = False) # Saves all of the random parameters
 scores_df.to_csv(f"{model_scores_folder}/scores_{label}.csv", index = False)
