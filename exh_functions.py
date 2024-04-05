@@ -271,7 +271,7 @@ def likelihood(samples_df):
 
 #MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
 #this function only works for the Bregenz model (it's resolution dependent and something else)
-def calc_new_position(output, samples, diff, og_depths):
+def calc_new_position(output, lith_list,samples, diff, og_depths):
     samples_noddy_pos = []
     for i in lith_list:
         p = ExtractCoordsSimple(output, lith = [i], res = 2)
