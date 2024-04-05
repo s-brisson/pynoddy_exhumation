@@ -100,7 +100,7 @@ for i in range(n_draws):
     ### Calculate the exhumation with the new parameters
     try:
         #new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths) #FOR TRANSALP
-        new_exhumation,_,_ = calc_new_position(output, lith_list,samples.copy(), diff, og_depths) #FOR SUBALIPINE MOLASSE
+        new_exhumation,_, = calc_new_position(output, lith_list,samples.copy(), diff, og_depths) #FOR SUBALIPINE MOLASSE
     except IndexError:
         print("IndexError")
         continue
