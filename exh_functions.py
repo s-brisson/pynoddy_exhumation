@@ -326,6 +326,7 @@ def likelihood_and_score(samples_df):
     
     likelihood = 1.0
     model_score = 0
+    samples_df['respected'] = 0
     
     for i in range(len(samples_df)):
         if samples_df.iloc[i]['group'] in ['a']:
