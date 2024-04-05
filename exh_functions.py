@@ -274,7 +274,7 @@ def likelihood(samples_df):
 def calc_new_position(output, lith_list,samples, diff, og_depths):
     samples_noddy_pos = []
     for i in lith_list:
-        p = ExtractCoordsSimple(output, lith = [i], res = 2)
+        p = ExtractCoordsSimple(output, lith = [i], res = 1)
         t = p[...,2].min()
         z = (t*1000) / 3681.39
         samples_noddy_pos.append(z)
