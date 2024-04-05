@@ -284,7 +284,7 @@ def calc_new_position(output, lith_list,samples, diff, og_depths):
     #else:
     #    proposed_exhumation = samples_noddy_pos - diff - og_depths
     samples['exhumation'] = proposed_exhumation
-    return samples, samples_noddy_pos, new_hist
+    return samples, samples_noddy_pos
 
 #this function is more general, I made it for the TRANSALP models but maybe it also works for other models
 #calculate the initial exhumation
