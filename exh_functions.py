@@ -271,10 +271,10 @@ def likelihood(samples_df):
 
 #MCMC USING INDEPENDENT PARAMETERS - FUNCTIONS
 #this function only works for the Bregenz model (it's resolution dependent and something else)
-def calc_new_position(hist, diff, og_depths, lith_list,samples,unique_label):
+def calc_new_position(output, samples, diff, og_depths):
     samples_noddy_pos = []
     for i in lith_list:
-        p,_,out,new_hist = ExtractCoords(hist, lith = [i], res = 1,unique_label = unique_label)
+        p = ExtractCoordsSimple(output, lith = [i], res = 2)
         t = p[...,2].min()
         z = (t*1000) / 3681.39
         samples_noddy_pos.append(z)
