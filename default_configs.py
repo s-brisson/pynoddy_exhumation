@@ -2,7 +2,7 @@ import numpy as np
 #### INPUTS
 history = 'data/input_files/bregenz_ver5.his'
 all_params = 'data/input_files/training_params_310.npy'
-history_samples = 'data/input_files/schuller_samples.his'
+history_samples = 'data/input_files/ortner_samples.his'
 samples = 'data/input_files/bregenz_data.csv'
 noddy_exe = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/noddy"
 save_each = False
@@ -25,7 +25,7 @@ sigma = 800
 
 #INPUTS Subalpine Molasse model selection
 sample_num = [0,1,2,3,4] #sample indices
-event = [13,14,15,16,17]
+event = [13,14,15,16]
 lith_list = [11,12,13,14,15]
 std = [500,2000,2000,1000]
 
