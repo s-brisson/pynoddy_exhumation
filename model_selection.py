@@ -90,8 +90,9 @@ exhumations = []
 
 ### SIMULATION
 print(f"[{time_string()}] Starting simulation")
-for i in range(n_draws):
-  
+good_models = 0
+while good_models < n_draws:
+    
     hist_copy = copy.deepcopy(hist)
 
     ### Disturb the model
@@ -101,8 +102,9 @@ for i in range(n_draws):
     try:
         #new_exhumation = calc_exhumation(output, avg_conv_factor, synth_samples.copy(), og_depths) #FOR TRANSALP
         new_exhumation,_, = calc_new_position(output, lith_list,samples.copy(), diff, og_depths) #FOR SUBALIPINE MOLASSE
-    except IndexError:
-        print("IndexError")
+        good_models += 1
+    except IndexError  as e:
+        print(e)
         continue
     new_exhumation.reset_index(drop = True, inplace = True)
     
@@ -111,13 +113,13 @@ for i in range(n_draws):
     samples = samples_df # redefine samples so that the respected count is preserved #SUBALPINE MOLASSE
     #synth_samples_updated, model_score = score_modelsel(new_exhumation, geo_gradient) #TRANSALP
     #synth_samples = synth_samples_updated #TRANSALP
-    print(f"Model score: {model_score}")
+    print(f"Model score: {model_score}\tGood Models: {good_models}/{n_draws}")
 
     ### Save outputs
-    print(f"[{time_string()}] Saving results of run {i+1}")
+    print(f"[{time_string()}] Saving results of run {good_models+1}")
     exhumations.append(new_exhumation['exhumation'])
     params = pd.concat([params, new_params_df], ignore_index=True)
-    scores.append([model_score, i])
+    scores.append([model_score, good_models])
 
 np.save(f"{model_exhumation_folder}/exhumation_{label}.npy", exhumations) 
 samples.to_csv(f"{model_samples_folder}/samples_{label}.csv", index = False) # Tells me which of the samples were respected
