@@ -38,3 +38,4 @@ prop = ['Z', 'Amplitude','Slip'] #properties to modify
 #event = np.arange(22,31) #events to modify
 #std = [2000,800,1000,600] #
 #lith_list = np.arange(16,28) #lith IDs for the samples being analyzed.
+starting_param = 0
