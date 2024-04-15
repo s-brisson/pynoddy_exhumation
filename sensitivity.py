@@ -73,7 +73,7 @@ for param in prop:
     
     for i, ev in enumerate(event):
         change_unit = 0
-        starting_param = hist_copy.events[ev].properties[param] - 50 #- (26 * 200)
+        starting_param = hist_copy.events[ev].properties[param] - (26 * 200)
         print(f"starting param for event {ev} and param {param}: {starting_param}")
         
         p = []
@@ -105,7 +105,7 @@ for param in prop:
             p.append(new_param)
             e.append(new_exhumation['exhumation'].tolist())
             
-            change_unit += 2 #200
+            change_unit += 200
             
         exh['Parameter'] = p
         exh['Exhumation'] = e
