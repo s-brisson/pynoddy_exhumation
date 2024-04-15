@@ -15,7 +15,7 @@ lith = [8] #lith ID for the indicator layer.
 
 #### OUTPUTS
 output_folder = "data/outputs"
-model_name = "ortner"
+model_name = "transalp"
 
 maps = [[21,-1000,-11000],
        [22,2000,-9500],
