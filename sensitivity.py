@@ -73,7 +73,7 @@ for param in prop:
     
     for i, ev in enumerate(event):
         change_unit = 0
-        starting_param = hist_copy.events[ev].properties[param] #- (26 * 200)
+        starting_param = hist_copy.events[ev].properties[param] - 50 #- (26 * 200)
         print(f"starting param for event {ev} and param {param}: {starting_param}")
         
         p = []
