@@ -12,7 +12,6 @@ from SALib.sample import saltelli
 from SALib.analyze import sobol
 plt.rcParams['font.size'] = 16
 from joblib import load
-print(f"joblib version: {joblib.__version__}")
 from tensorflow import keras
 
 created_parser = parser_new()
