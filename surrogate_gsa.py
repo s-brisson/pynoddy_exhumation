@@ -27,7 +27,7 @@ model_file = 'data/input_files/Alps_KinematicModelAlpsFault1-4.joblib'
 basis_file = 'data/input_files/BasisFctsKinematicModelAlpsFault1-4_e-0'
 
 # Data-based surrogate
-model_file_nn = '../Surrogates/Kinematic_nn_model/'
+model_file_nn = 'data/input_files/Surrogates/Kinematic_nn_model/'
 
 # Training and Validation Parameters
 train_param = np.load('data/input_files/TrainingsParametersKinematicModelAlpsFault1-4_depth_rounded_unique.npy')
