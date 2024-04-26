@@ -23,8 +23,8 @@ def first_unique_vals(array):
 def calc_dims(output, res, zdim):
     xdim = np.round(output.nx/res, decimals = 0).astype(int) #get the extent by checking how many voxels were actually sampled.
     ydim = np.round(output.ny/res, decimals = 0).astype(int)
-    zdim = np.round((np.abs(ori_depth) - np.abs(upperlim))/interval, decimals = 0).astype(int)
-    #zdim = zdim
+    #zdim = np.round((np.abs(ori_depth) - np.abs(upperlim))/interval, decimals = 0).astype(int)
+    zdim = zdim
     return xdim, ydim, zdim
 
 def exhumation_grid(array, output, res, zdim): #code to convert bullshit coords back into voxels and then calculates the exhumation grid
