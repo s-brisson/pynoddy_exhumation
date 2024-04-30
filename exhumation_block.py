@@ -22,15 +22,17 @@ label = generate_unique_label()
 
 model_exhumation_folder = f"{output_folder}/{model_name}/model_exhumation/{args.folder}/"
 model_params_folder = f"{output_folder}/{model_name}/model_params/{args.folder}/"
-model_rawdata_folder = f"{output_folder}/{model_name}/model_rawdata/{args.folder}/"
+model_coords_folder = f"{output_folder}/{model_name}/model_coords/{args.folder}/"
 
 makedirs(model_exhumation_folder,exist_ok=True)
 makedirs(model_params_folder,exist_ok=True)
-makedirs(model_rawdata_folder,exist_ok=True)
+makedirs(model_coords_folder,exist_ok=True)
 
 print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
 print(f"[{time_string()}] {'Input file':<40} {all_params}")
+print(f"[{time_string()}] {'Running on res =':<40} {res}")
+print(f"[{time_string()}] {'Running on interval =':<40} {interval}")
 print()
 
 #LOAD NODDY MODEL
@@ -49,8 +51,8 @@ pynoddy.compute_model(hist_hd, out_hd, noddy_path = noddy_exe)
 out_hd = pynoddy.output.NoddyOutput(out_hd)
 
 #DEFINE IMPORTANT VALUES
-fault_list = [11,12,13,15]
-prop_list = ['Slip', 'Amplitude']
+fault_list = [9,10,11,12,13,15,16,17]
+prop_list = ['Slip']
 
 upperlim = out_hd.zmax
 for event_name, event in hist.events.items():
@@ -84,8 +86,8 @@ for i in range(len(all_params)):
 
     #with open(f'{model_rawdata_folder}/rawblock_{label}_row{i}.pkl', 'wb') as f:
     #    pickle.dump(raw_exh_block, f)
-    #with open(f'{model_rawdata_folder}/rawcoords_{label}_row{i}.pkl', 'wb') as k:
-    #    pickle.dump(model_coords, k)
+    with open(f'{model_coords_folder}/coords_{label}_row{i}.pkl', 'wb') as k:
+        pickle.dump(model_coords, k)
     np.save(f"{model_exhumation_folder}/exh_block_{label}_row{i}.npy", exh_block)
     np.save(f"{model_params_folder}/params_{label}_row{i}.npy", all_params[i])
 
