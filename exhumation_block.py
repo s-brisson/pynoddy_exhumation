@@ -76,8 +76,8 @@ hist_copy = copy.deepcopy(hist)
 for i in range(len(all_params)):
     #print(f"Processing #{i} out of {len(all_params)}")
     for f, fault in enumerate(fault_list):
-        #for p, prop in enumerate(prop_list):
-        hist_copy.events[fault].properties[prop] = all_params[i][f]
+        for p, prop in enumerate(prop_list):
+            hist_copy.events[fault].properties[prop] = all_params[i][f]
             
     model_coords,_,_ = exhumationComplex(i,hist_copy, lith, res, interval, upperlim, label) 
     exh_block,_,_ = exhumation_grid_single(model_coords, out_hd, res, zdim)
