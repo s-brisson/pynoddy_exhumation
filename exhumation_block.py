@@ -28,7 +28,7 @@ makedirs(model_exhumation_folder,exist_ok=True)
 makedirs(model_params_folder,exist_ok=True)
 makedirs(model_coords_folder,exist_ok=True)
 
-print(f"[{time_string()}] {'Simulating based on file':<40} {history}")
+print(f"[{time_string()}] {'Simulating based on file':<40} {synthetic}")
 print(f"[{time_string()}] {'Model output files folder':<40} {args.folder}")
 print(f"[{time_string()}] {'Input file':<40} {all_params}")
 print(f"[{time_string()}] {'Running on res =':<40} {res}")
@@ -38,10 +38,10 @@ print()
 #LOAD NODDY MODEL
 print(f"[{time_string()}] Running the base model")
 output_name = f'{output_folder}/noddy/noddy_out_{label}'
-pynoddy.compute_model(history, output_name, 
+pynoddy.compute_model(synthetic, output_name, 
                       noddy_path = noddy_exe,
                       verbose=True)
-hist = pynoddy.history.NoddyHistory(history)
+hist = pynoddy.history.NoddyHistory(synthetic)
 hist.change_cube_size(cubesize)
 hist_hd = f'{output_folder}/history/hist_hd_{label}.his'
 out_hd = f'{output_folder}/noddy/out_hd_{label}'
@@ -51,8 +51,8 @@ pynoddy.compute_model(hist_hd, out_hd, noddy_path = noddy_exe)
 out_hd = pynoddy.output.NoddyOutput(out_hd)
 
 #DEFINE IMPORTANT VALUES
-fault_list = [9,10,11,12,13,15,16,17]
-prop_list = ['Slip']
+fault_list = [2,3]
+prop_list = ['Dip', 'Slip'] 
 
 upperlim = out_hd.zmax
 for event_name, event in hist.events.items():
