@@ -1,27 +1,28 @@
 import numpy as np
 #### INPUTS
-history = 'data/input_files/bregenz_ver5.his'
-all_params = 'data/input_files/validation_params/validation_params_20.npy'
-history_samples = 'data/input_files/ortner_samples.his'
-samples = 'data/input_files/bregenz_data.csv'
+#history = 'data/input_files/bregenz_ver5.his'
+synthetic = 'data/input_files/synthetic_models/planar/planar.his'
+all_params = 'data/input_files/synthetic_models/planar/planar_training_params_00.npy'
+#history_samples = 'data/input_files/ortner_samples.his'
+#samples = 'data/input_files/bregenz_data.csv'
 noddy_exe = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/noddy"
-save_each = False
-save_overall = True
+#save_each = False
+#save_overall = True
 #### Modeling params
 cubesize = 100
-lith = [11] #lith ID for the indicator layer.
+lith = [8] #lith ID for the indicator layer.
 
-zdim = 45
+zdim = 49
 
 #### OUTPUTS
 output_folder = "data/outputs"
 model_name = "surrogate"
 
-maps = [[21,-1000,-11000],
-       [22,2000,-9500],
-       [23,-2000,-5000]]
-synthetic_data = [[21, 3400],[22, 3300],[24,5400]]
-sigma = 800
+#maps = [[21,-1000,-11000],
+#       [22,2000,-9500],
+#       [23,-2000,-5000]]
+#synthetic_data = [[21, 3400],[22, 3300],[24,5400]]
+#sigma = 800
 
 #INPUTS Subalpine Molasse model selection
 #sample_num = [0,1,2,3,4] #sample indices
