@@ -207,7 +207,8 @@ def exhumationComplex(ndraw, history, lith, res = 8, interval = 50, upperlim = 0
                 print(f"[{time_string()}] Processing indicator at z = {new_z} ... Done")
         
         for j in range(len(x)):    
-            coords.append([n_sample,x[j],y[j],z[j],exhumation[j],ndraw])
+            #coords.append([n_sample,x[j],y[j],z[j],exhumation[j],ndraw])
+            coords.append([x[j],y[j],z[j],exhumation[j]])
         
         #coords = np.array(coords)
             
