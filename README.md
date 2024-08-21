@@ -23,7 +23,7 @@ The coordinates of the whole model. For each draw there is one set of coordinate
 
 | N_Sample | X    | Y      | Z    | Exhumation | NDraw |
 |----------|------|--------|------|------------|-------|
-| sono     | una  | grande | alta | bol        | uda   |
+|          |      |        |      |            |       |
 ---
 
 **Model Blocks**
@@ -47,7 +47,7 @@ The scores of the model describing how well the model fits the input data. For e
 
 | Draw  Numer | Score | 
 |----------|------|
-| 1     | Mas que un panch  |
+| 1     |         |
 ---
 
 **Model Sample**
