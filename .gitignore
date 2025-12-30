@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Analysis documentation (local only, not versioned)
+docs/analysis/
+
+# Large data files
+*.npy
+*.npz
+*.h5
+*.hdf5
+
+# Cluster outputs and results (too large)
+cluster_outputs/
+results/
+outputs/
+model_coords/
+model_blocks/
+*.pkl
+*.pickle
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# History files (may contain paths)
+*.his
+
+# Data files
+*.csv
+!requirements.txt
+!setup.py
+
+# Backup files
+*.backup
+*.backup2
+

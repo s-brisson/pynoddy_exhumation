@@ -5,7 +5,7 @@ import pynoddy.history
 import pynoddy.output
 
 noddy_exe_path = "/rwthfs/rz/cluster/home/ho640525/projects/pynoddy/pynoddy/noddyapp/noddy"
-history = 'twofaults_translation.his'
+history = 'examples/twofaults_translation.his'
 output_name = 'noddy_out'
 pynoddy.compute_model(history, output_name, 
                       noddy_path = noddy_exe_path)
